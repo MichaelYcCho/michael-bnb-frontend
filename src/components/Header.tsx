@@ -25,7 +25,7 @@ export default function Header() {
     onOpen: onSignUpOpen,
   } = useDisclosure();
   const { toggleColorMode } = useColorMode();
-  const logoColor = useColorModeValue("red.500", "red.200");
+  const logoColor = useColorModeValue("red.500", "red.200");  // 라이트모드, 다크모드일때 변수
   const Icon = useColorModeValue(FaMoon, FaSun);
   return (
     <HStack
