@@ -5,6 +5,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { githubLogIn } from "../api";
 
 export default function GithubConfirm() {
+    // useLocation -> 현재 위치를 알려줌 (path_name)
+    // search는 query string을 알려줌
   const { search } = useLocation();
   const confirmLogin = async () => {
     const params = new URLSearchParams(search);
