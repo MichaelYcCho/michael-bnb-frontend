@@ -34,15 +34,29 @@ export const logOut = () =>
   })
   .then((response) => response.data);
 
-  export const githubLogIn = (code: string) =>
-  instance
-    .post(
-      `/users/github`,
-      { code },
-      {
-        headers: {
-          "X-CSRFToken": Cookie.get("csrftoken") || "",
-        },
-      }
-    )
-    .then((response) => response.status);
+export const githubLogIn = (code: string) =>
+instance
+  .post(
+    `/users/github`,
+    { code },
+    {
+      headers: {
+        "X-CSRFToken": Cookie.get("csrftoken") || "",
+      },
+    }
+  )
+  .then((response) => response.status);
+  
+
+export const kakaoLogin = (code: string) =>
+instance
+  .post(
+    `/users/kakao`,
+    { code },
+    {
+      headers: {
+        "X-CSRFToken": Cookie.get("csrftoken") || "",
+      },
+    }
+  )
+  .then((response) => response.status);
