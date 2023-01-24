@@ -27,11 +27,11 @@ const router = createBrowserRouter([
             path: "github",
             element: <GithubConfirm />,
           },
+          {
+            path: "kakao",
+            element: <KakaoConfirm />,
+          },
         ],
-      },
-      {
-        path: "kakao",
-        element: <KakaoConfirm />,
       },
     ],
   },
