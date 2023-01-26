@@ -27,12 +27,12 @@ import {
     const [email, setEmail] = useState("");
     const [emailError, setEmailError] = useState("");
     const onChange = (event: React.SyntheticEvent<HTMLInputElement>) => {
-      const { name, value } = event.currentTarget;
-      if (name === "username") {
-        setUsername(value);
-      } else if (name === "password") {
-        setPassword(value);
-      }
+    const { name, value } = event.currentTarget;
+    if (name === "username") {
+      setUsername(value);
+    } else if (name === "password") {
+      setPassword(value);
+    }
     };
     const onSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
       event.preventDefault();
