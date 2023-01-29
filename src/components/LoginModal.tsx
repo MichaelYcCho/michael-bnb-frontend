@@ -53,9 +53,11 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
       });
       onClose();
       queryClient.refetchQueries(["me"]);
-      reset();
+      reset(); // state 값 초기화
     },
   });
+
+
   const onSubmit = ({ username, password }: IForm) => {
     mutation.mutate({ username, password });
   };
