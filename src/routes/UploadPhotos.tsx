@@ -10,7 +10,7 @@ import {
   import { useMutation } from "@tanstack/react-query";
   import { useForm } from "react-hook-form";
   import { useParams } from "react-router-dom";
-  import { getUploadURL } from "../api";
+  import { getUploadURL, uploadImage } from "../api";
   import useHostOnlyPage from "../components/HostOnlyPage";
   import ProtectedPage from "../components/ProtectedPage";
   
@@ -18,17 +18,35 @@ import {
     file: FileList;
   }
   
+  interface IUploadURLResponse {
+    id: string;
+    uploadURL: string;
+  }
+  
   export default function UploadPhotos() {
-    const { register, handleSubmit } = useForm<IForm>();
-    const mutation = useMutation(getUploadURL, {
+    const { register, handleSubmit, watch } = useForm<IForm>();
+    const { roomPk } = useParams();
+
+    const uploadImageMutation = useMutation(uploadImage, {
       onSuccess: (data: any) => {
         console.log(data);
       },
     });
-    const { roomPk } = useParams();
+
+    // useMutation을 쓸땐 하나의 object만 args로 받아야하므로 Mutation을 2개로 나눠서 해결
+    const uploadURLMutation = useMutation(getUploadURL, {
+      onSuccess: (data: IUploadURLResponse) => {
+        uploadImageMutation.mutate({
+        // console.log(watch())
+        // Watch를 통해 나오는 FileList의 첫번째 index를 가진 File을 Form에 넣는다
+        uploadURL: data.uploadURL,
+        file: watch("file"),
+        });
+      },
+    });
     useHostOnlyPage();
-    const onSubmit = (data: any) => {
-      mutation.mutate();
+    const onSubmit = () => {
+      uploadURLMutation.mutate();
     };
     return (
       <ProtectedPage>
