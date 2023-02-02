@@ -5,12 +5,13 @@ import {
     FormControl,
     Heading,
     Input,
+    useToast,
     VStack,
   } from "@chakra-ui/react";
   import { useMutation } from "@tanstack/react-query";
   import { useForm } from "react-hook-form";
   import { useParams } from "react-router-dom";
-  import { getUploadURL, uploadImage } from "../api";
+  import { createPhoto, getUploadURL, uploadImage } from "../api";
   import useHostOnlyPage from "../components/HostOnlyPage";
   import ProtectedPage from "../components/ProtectedPage";
   
@@ -24,23 +25,39 @@ import {
   }
   
   export default function UploadPhotos() {
-    const { register, handleSubmit, watch } = useForm<IForm>();
+    const { register, handleSubmit, watch, reset } = useForm<IForm>();
     const { roomPk } = useParams();
-
-    const uploadImageMutation = useMutation(uploadImage, {
-      onSuccess: (data: any) => {
-        console.log(data);
+    const toast = useToast();
+    const createPhotoMutation = useMutation(createPhoto, {
+      onSuccess: () => {
+        toast({
+          status: "success",
+          title: "Image uploaded!",
+          isClosable: true,
+          description: "Feel free to upload more images.",
+        });
+        reset();
       },
     });
-
-    // useMutation을 쓸땐 하나의 object만 args로 받아야하므로 Mutation을 2개로 나눠서 해결
+    const uploadImageMutation = useMutation(uploadImage, {
+        // mutate를 통해 전달받은 data 안의 result를 받아옴
+      onSuccess: ({ result }: any) => {
+        // data: any로 매개인자 받아오면 됨, console.log("data결과 확인", result)
+        if (roomPk) {
+            // TODO: description 완성
+          createPhotoMutation.mutate({
+            description: "Is Description",
+            file: `https://imagedelivery.net/${process.env.REACT_APP_CF_HASH}/${result.id}/public`,
+            roomPk,
+          });
+        }
+      },
+    });
     const uploadURLMutation = useMutation(getUploadURL, {
       onSuccess: (data: IUploadURLResponse) => {
         uploadImageMutation.mutate({
-        // console.log(watch())
-        // Watch를 통해 나오는 FileList의 첫번째 index를 가진 File을 Form에 넣는다
-        uploadURL: data.uploadURL,
-        file: watch("file"),
+          uploadURL: data.uploadURL,
+          file: watch("file"),
         });
       },
     });
@@ -69,7 +86,16 @@ import {
               <FormControl>
                 <Input {...register("file")} type="file" accept="image/*" />
               </FormControl>
-              <Button type="submit" w="full" colorScheme={"red"}>
+              <Button
+                isLoading={
+                  createPhotoMutation.isLoading ||
+                  uploadImageMutation.isLoading ||
+                  uploadURLMutation.isLoading
+                }
+                type="submit"
+                w="full"
+                colorScheme={"red"}
+              >
                 Upload photos
               </Button>
             </VStack>
