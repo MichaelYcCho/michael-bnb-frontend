@@ -1,6 +1,7 @@
 import {
   Avatar,
   Box,
+  Button,
   Container,
   Grid,
   GridItem,
@@ -16,24 +17,27 @@ import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
-import { getRoom, getRoomReviews } from "../api";
+import { checkBooking, getRoom, getRoomReviews } from "../api";
 import { IReview, IRoomDetail } from "../types";
 import { useEffect, useState } from "react";
 
 export default function RoomDetail() {
   const { roomPk } = useParams();
   const { isLoading, data } = useQuery<IRoomDetail>([`rooms`, roomPk], getRoom);
-  const { data: reviewsData } = useQuery<IReview[]>([`rooms`, roomPk, `reviews`], getRoomReviews);
+  const { data: reviewsData } = useQuery<IReview[]>(
+    [`rooms`, roomPk, `reviews`],
+    getRoomReviews
+  );
   const [dates, setDates] = useState<Date[]>();
-  useEffect(() => {
-    if (dates) {
-      const [firstDate, secondDate] = dates;
-      const [checkIn] = firstDate.toJSON().split("T");
-      const [checkOut] = secondDate.toJSON().split("T");
-      console.log(checkIn, checkOut);
+  const { data: checkBookingData, isLoading: isCheckingBooking } = useQuery(
+    ["check", roomPk, dates],  // # dates: 사용자가 선택한 날짜 => dates가 바뀔때마다 해당 로직이 실행됨
+    checkBooking,
+    {
+      cacheTime: 0,
+      enabled: dates !== undefined,  // Query가 자동으로 실행되지않고, 수동실행시키는 것이다. state가 undefined이 아니다 -> 사용자가 날짜를 선택 -> 쿼리 재실행
     }
-  }, [dates]);
-
+  );
+  console.log("흠",checkBooking,  isCheckingBooking)
   return (
     <Box
       pb={40}
@@ -145,9 +149,23 @@ export default function RoomDetail() {
             next2Label={null}
             minDetail="month"
             minDate={new Date()}
-            maxDate={new Date(Date.now() + 60 * 60 * 24 * 7 * 4 * 6 * 1000)} // 6개월 이 예약 최대범위
+
+            // 6개월 이 예약 최대범위
+            maxDate={new Date(Date.now() + 60 * 60 * 24 * 7 * 4 * 6 * 1000)} 
             selectRange
           />
+          <Button
+            disabled={!checkBookingData?.ok}
+            isLoading={isCheckingBooking}
+            my={5}
+            w="100%"
+            colorScheme={"red"}
+          >
+            Make booking
+          </Button>
+          {!isCheckingBooking && !checkBookingData?.ok ? (
+            <Text color="red.500">Can't book on those dates, sorry.</Text>
+          ) : null}
         </Box>
       </Grid>
     </Box>
