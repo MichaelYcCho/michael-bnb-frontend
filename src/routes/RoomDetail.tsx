@@ -19,7 +19,8 @@ import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import { checkBooking, getRoom, getRoomReviews } from "../api";
 import { IReview, IRoomDetail } from "../types";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { Helmet } from "react-helmet";
 
 export default function RoomDetail() {
   const { roomPk } = useParams();
@@ -30,14 +31,13 @@ export default function RoomDetail() {
   );
   const [dates, setDates] = useState<Date[]>();
   const { data: checkBookingData, isLoading: isCheckingBooking } = useQuery(
-    ["check", roomPk, dates],  // # dates: 사용자가 선택한 날짜 => dates가 바뀔때마다 해당 로직이 실행됨
+    ["check", roomPk, dates],
     checkBooking,
     {
       cacheTime: 0,
-      enabled: dates !== undefined,  // Query가 자동으로 실행되지않고, 수동실행시키는 것이다. state가 undefined이 아니다 -> 사용자가 날짜를 선택 -> 쿼리 재실행
+      enabled: dates !== undefined,
     }
   );
-  console.log("흠",checkBooking,  isCheckingBooking)
   return (
     <Box
       pb={40}
@@ -47,6 +47,9 @@ export default function RoomDetail() {
         lg: 40,
       }}
     >
+      <Helmet>
+        <title>{data ? data.name : "Loading..."}</title>
+      </Helmet>
       <Skeleton height={"43px"} width="25%" isLoaded={!isLoading}>
         <Heading>{data?.name}</Heading>
       </Skeleton>
@@ -144,19 +147,18 @@ export default function RoomDetail() {
         </Box>
         <Box pt={10}>
           <Calendar
+            goToRangeStartOnSelect
             onChange={setDates}
             prev2Label={null}
             next2Label={null}
             minDetail="month"
             minDate={new Date()}
-
-            // 6개월 이 예약 최대범위
-            maxDate={new Date(Date.now() + 60 * 60 * 24 * 7 * 4 * 6 * 1000)} 
+            maxDate={new Date(Date.now() + 60 * 60 * 24 * 7 * 4 * 6 * 1000)}
             selectRange
           />
           <Button
             disabled={!checkBookingData?.ok}
-            isLoading={isCheckingBooking}
+            isLoading={isCheckingBooking && dates !== undefined}
             my={5}
             w="100%"
             colorScheme={"red"}
