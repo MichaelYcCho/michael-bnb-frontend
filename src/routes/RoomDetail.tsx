@@ -17,6 +17,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
+import "../calendar.css";
 import { checkBooking, getRoom, getRoomReviews } from "../api";
 import { IReview, IRoomDetail } from "../types";
 import { useState } from "react";
@@ -30,6 +31,9 @@ export default function RoomDetail() {
     getRoomReviews
   );
   const [dates, setDates] = useState<Date[]>();
+
+  // dates: 사용자가 선택한 날짜 => dates가 바뀔때마다 해당 로직이 실행됨
+  // enabled : Query가 자동으로 실행되지않고, 수동실행시키는 것이다. state가 undefined이 아니다 -> 사용자가 날짜를 선택 -> 쿼리 재실행
   const { data: checkBookingData, isLoading: isCheckingBooking } = useQuery(
     ["check", roomPk, dates],
     checkBooking,
@@ -153,6 +157,7 @@ export default function RoomDetail() {
             next2Label={null}
             minDetail="month"
             minDate={new Date()}
+            // 6개월 이 예약 최대범위
             maxDate={new Date(Date.now() + 60 * 60 * 24 * 7 * 4 * 6 * 1000)}
             selectRange
           />
