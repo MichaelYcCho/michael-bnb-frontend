@@ -4,9 +4,35 @@ import axios from "axios";
 import { formatDate } from "./lib/utils";
 
 const instance = axios.create({
-  baseURL: "http://127.0.0.1:8000/api/v1/",
+  baseURL: "http://127.0.0.1:8000/api/v0/",
   withCredentials: true,
 });
+
+
+export interface IUserSignUpVariables {
+  name: string;
+  username: string;
+  password: string;
+  email: string;
+}
+
+export const userSignUp = ({
+  name,
+  username,
+  password,
+  email,
+}: IUserSignUpVariables) =>
+  instance
+      .post(
+          `/users/sign-up`,
+          { name, username, password, email },
+          {
+              headers: {
+                  "X-CSRFToken": Cookie.get("csrftoken") || "",
+              },
+          }
+      )
+      .then((response) => response.data);
 
 export const getRooms = () =>
   instance.get("rooms/").then((response) => response.data);
