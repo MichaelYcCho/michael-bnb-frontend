@@ -34,12 +34,22 @@ export const userSignUp = ({
       )
       .then((response) => response.data);
 
+
+// Room
+
 export const getRooms = () =>
   instance.get("rooms/").then((response) => response.data);
 
 export const getRoom = ({ queryKey }: QueryFunctionContext) => {
   const [_, roomPk] = queryKey;
   return instance.get(`rooms/${roomPk}`).then((response) => response.data);
+};
+
+export const getRoomAmenities = ({ queryKey }: QueryFunctionContext) => {
+  const [_, roomPk] = queryKey;
+  return instance
+      .get(`rooms/${roomPk}/amenities`)
+      .then((response) => response.data);
 };
 
 export const getRoomReviews = ({ queryKey }: QueryFunctionContext) => {
@@ -133,6 +143,7 @@ export interface ICreateRoomVariables {
   category: number;
 }
 
+
 export const createRoom = (variables: ICreateRoomVariables) =>
   instance
     .post(`rooms/`, variables, {
@@ -150,6 +161,20 @@ export const getUploadURL = () =>
       },
     })
     .then((response) => response.data);
+
+export interface IUpdateRoomVariables extends ICreateRoomVariables {
+  roomPk: string;
+}
+
+export const updateRoom = (variables: IUpdateRoomVariables) =>
+    instance
+        .put(`rooms/${variables.roomPk}`, variables, {
+            headers: {
+                "X-CSRFToken": Cookie.get("csrftoken") || "",
+            },
+        })
+        .then((response) => response.data);
+
 
 export interface IUploadImageVarialbes {
   file: FileList;
