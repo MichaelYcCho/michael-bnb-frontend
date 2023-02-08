@@ -23,19 +23,19 @@ import {
   import {
     getAmenities,
     getCategories,
-    IUploadRoomVariables,
-    uploadRoom,
+    ICreateRoomVariables,
+    createRoom,
   } from "../api";
   import useHostOnlyPage from "../components/HostOnlyPage";
   import ProtectedPage from "../components/ProtectedPage";
   import { IAmenity, ICategory, IRoomDetail } from "../types";
   import { useNavigate } from "react-router-dom";
   
-  export default function UploadRoom() {
-    const { register, handleSubmit } = useForm<IUploadRoomVariables>();
+  export default function CreateRoom() {
+    const { register, handleSubmit } = useForm<ICreateRoomVariables>();
     const toast = useToast();
     const navigate = useNavigate();
-    const mutation = useMutation(uploadRoom, {
+    const mutation = useMutation(createRoom, {
         onSuccess: (data: IRoomDetail) => {
             toast({
                 status: "success",
@@ -49,7 +49,7 @@ import {
     const { data: amenities } = useQuery<IAmenity[]>(["amenities"], getAmenities);
     const { data: categories } = useQuery<ICategory[]>(["categories"], getCategories);
     useHostOnlyPage();
-    const onSubmit = (data: IUploadRoomVariables) => {
+    const onSubmit = (data: ICreateRoomVariables) => {
       mutation.mutate(data);
     };
     return (

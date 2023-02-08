@@ -118,7 +118,7 @@ export const getAmenities = () =>
 export const getCategories = () =>
   instance.get(`categories`).then((response) => response.data);
 
-export interface IUploadRoomVariables {
+export interface ICreateRoomVariables {
   name: string;
   country: string;
   city: string;
@@ -133,7 +133,7 @@ export interface IUploadRoomVariables {
   category: number;
 }
 
-export const uploadRoom = (variables: IUploadRoomVariables) =>
+export const createRoom = (variables: ICreateRoomVariables) =>
   instance
     .post(`rooms/`, variables, {
       headers: {

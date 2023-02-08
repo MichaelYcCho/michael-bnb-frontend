@@ -6,7 +6,7 @@ import KakaoConfirm from "./routes/KakaoConfirm";
 import NotFound from "./routes/NotFound";
 import RoomDetail from "./routes/RoomDetail";
 import UploadPhotos from "./routes/UploadPhotos";
-import UploadRoom from "./routes/UploadRoom";
+import CreateRoom from "./routes/CreateRoom";
 
 const router = createBrowserRouter([
   {
@@ -20,7 +20,7 @@ const router = createBrowserRouter([
       },
       {
         path: "rooms/upload",
-        element: <UploadRoom />,
+        element: <CreateRoom />,
       },
       {
         path: "rooms/:roomPk",
