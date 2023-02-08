@@ -50,7 +50,7 @@ export interface IRoomPhotoPhoto {
     amenities: IAmenity[];
   }
 
-  export interface IReview {
+  export interface IRoomReview {
     payload: string;
     rating: number;
     user: IRoomOwner;

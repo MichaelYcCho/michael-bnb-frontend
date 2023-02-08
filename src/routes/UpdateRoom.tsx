@@ -196,7 +196,6 @@ export default function UpdateRoom() {
                         <FormControl>
                             <Checkbox
                                 {...register("pet_friendly", {
-                                    required: true,
                                 })}
                             >
                                 Pet Friendly?
@@ -208,7 +207,7 @@ export default function UpdateRoom() {
                                 {...register("kind", { required: true })}
                                 placeholder="종류를 골라주세요"
                             >
-                                <option value={"entire_place"}>
+                                <option value={"entire_place"} selected>
                                     Entire Place
                                 </option>
                                 <option value={"private_room"}>
@@ -226,7 +225,7 @@ export default function UpdateRoom() {
                             <FormLabel>Category of Room</FormLabel>
                             <Select
                                 {...register("category", {
-                                    required: true,
+                                    //required: true,
                                 })}
                                 placeholder="카테고리를 골라주세요"
                             >
@@ -258,7 +257,7 @@ export default function UpdateRoom() {
                                         <Checkbox
                                             value={amenity.pk}
                                             {...register("amenities", {
-                                                required: true,
+                                                //required: true,
                                             })}
                                         >
                                             {amenity.name}

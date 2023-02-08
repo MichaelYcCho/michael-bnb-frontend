@@ -28,7 +28,7 @@ const router = createBrowserRouter([
         element: <RoomDetail />,
       },
       {
-        path: "rooms/:roomPk/edit",
+        path: "rooms/:roomPk/update",
         element: <UpdateRoom />,
     },
       {

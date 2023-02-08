@@ -217,6 +217,7 @@ export const createPhoto = ({
     .then((response) => response.data);
 
 
+// Booking
 type CheckBookingQueryKey = [string, string?, Date[]?];
 
 export const checkBooking = ({
@@ -233,4 +234,32 @@ export const checkBooking = ({
       )
       .then((response) => response.data);
   }
+};
+
+
+
+export interface IRoomBookingVariables {
+  checkIn: string;
+  checkOut: string;
+  roomPk: string;
+  guests: number;
+}
+
+export const roomBooking = ({
+    checkIn,
+    checkOut,
+    roomPk,
+    guests,
+}: IRoomBookingVariables) => {
+    return instance
+        .post(
+            `rooms/${roomPk}/bookings`,
+            { checkIn, checkOut, guests },
+            {
+                headers: {
+                    "X-CSRFToken": Cookie.get("csrftoken") || "",
+                },
+            }
+        )
+        .then((response) => response.data);
 };

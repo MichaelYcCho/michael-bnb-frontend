@@ -10,26 +10,40 @@ import {
   Image,
   Skeleton,
   Text,
+  useToast,
   VStack,
 } from "@chakra-ui/react";
-import { FaStar } from "react-icons/fa";
-import { useQuery } from "@tanstack/react-query";
-import { useParams } from "react-router-dom";
+
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { FaPencilAlt, FaStar } from "react-icons/fa";
+import { useNavigate, useParams } from "react-router-dom";
+import {
+    checkBooking,
+    getAmenities,
+    getRoom,
+    getRoomAmenities,
+    getRoomReviews,
+    roomBooking,
+} from "../api";
+import { IAmenity, IRoomDetail, IRoomReview } from "../types";
+
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import "../calendar.css";
-import { checkBooking, getRoom, getRoomReviews } from "../api";
-import { IReview, IRoomDetail } from "../types";
 import { useState } from "react";
 import { Helmet } from "react-helmet";
+import { useForm } from "react-hook-form";
+import { formatDate } from "../lib/utils";
+import useUser from "../lib/useUser";
 
 export default function RoomDetail() {
+  const {reset, watch } = useForm();
+  const navigate = useNavigate();
   const { roomPk } = useParams();
+  const { user } = useUser();
   const { isLoading, data } = useQuery<IRoomDetail>([`rooms`, roomPk], getRoom);
-  const { data: reviewsData } = useQuery<IReview[]>(
-    [`rooms`, roomPk, `reviews`],
-    getRoomReviews
-  );
+  const { data: reviewsData } = useQuery<IRoomReview[]>([`rooms`, roomPk, `reviews`], getRoomReviews);
+  const { data: amenities, isLoading: isAmenitiesLoading } = useQuery<IAmenity[]>([`rooms`, roomPk, `amenities`], getRoomAmenities);
   const [dates, setDates] = useState<Date[]>();
 
   // dates: 사용자가 선택한 날짜 => dates가 바뀔때마다 해당 로직이 실행됨
@@ -42,6 +56,41 @@ export default function RoomDetail() {
       enabled: dates !== undefined,
     }
   );
+
+  const toast = useToast();
+    const mutation = useMutation(roomBooking, {
+        onSuccess: () => {
+            toast({
+                status: "success",
+                title: "Booking create",
+                description: "예약이 완료되었습니다.",
+                position: "bottom-right",
+            });
+            reset();
+        },
+    });
+    const onSubmit = () => {
+        if (!user) {
+            toast({
+                status: "error",
+                title: "Please Log In",
+                description: "로그인 해주세요",
+                position: "bottom-right",
+            });
+        }
+        if (roomPk && dates && user) {
+            const [firstDate, secondDate] = dates;
+            const checkIn = formatDate(firstDate);
+            const checkOut = formatDate(secondDate);
+            const guests = watch("guests");
+            mutation.mutate({ checkIn, checkOut, roomPk, guests });
+        }
+        reset();
+    };
+    const onEditClick = (event: React.SyntheticEvent<HTMLButtonElement>) => {
+        event.preventDefault();
+        navigate(`/rooms/${roomPk}/update`);
+    };
   return (
     <Box
       pb={40}
@@ -54,9 +103,20 @@ export default function RoomDetail() {
       <Helmet>
         <title>{data ? data.name : "Loading..."}</title>
       </Helmet>
-      <Skeleton height={"43px"} width="25%" isLoaded={!isLoading}>
-        <Heading>{data?.name}</Heading>
-      </Skeleton>
+      <HStack>
+          <Skeleton
+              height={"43px"}
+              w={!isLoading ? "100%" : " 40%"}
+              isLoaded={!isLoading}
+          >
+              <Heading>{data?.name}</Heading>
+          </Skeleton>
+          {data?.is_owner ? (
+              <Button onClick={onEditClick}>
+                  <FaPencilAlt />
+              </Button>
+          ) : null}
+      </HStack>
       <Grid
         mt={8}
         rounded="xl"
@@ -88,7 +148,7 @@ export default function RoomDetail() {
       </Grid>
       <Grid gap={60} templateColumns={"2fr 1fr"}>
         <Box>
-          <HStack justifyContent={"space-between"} mt={10}>
+          <HStack mt={10} mb={10} justifyContent={"space-between"}>
             <VStack alignItems={"flex-start"}>
               <Skeleton isLoaded={!isLoading} height={"30px"}>
                 <Heading fontSize={"2xl"}>
@@ -113,6 +173,33 @@ export default function RoomDetail() {
               src={data?.owner.avatar}
             />
           </HStack>
+
+          <hr />
+            <Box mt={10} mb={10}>
+                <VStack alignItems={"flex-start"} spacing={10}>
+                    <Text>{data?.description}</Text>
+                    <Text fontSize={"3xl"}>{data?.category.name}</Text>
+                </VStack>
+            </Box>
+            <hr />
+            <Box mt={10} mb={10}>
+                <Heading mb={10}>숙소 편의 시설</Heading>
+                <Grid
+                    templateRows={"1fr 1fr"}
+                    templateColumns={"repeat(2, 1fr)"}
+                >
+                    {amenities?.map((amenity) => (
+                        <GridItem gap={60} key={amenity.pk}>
+                            <Text fontSize={"2xl"} color={"red.400"}>
+                                {amenity.name}
+                            </Text>
+                            <Text>{amenity.description}</Text>
+                        </GridItem>
+                    ))}
+                </Grid>
+            </Box>
+          <hr />
+
           <Box mt={10}>
             <Heading mb={5} fontSize={"2xl"}>
               <HStack>
