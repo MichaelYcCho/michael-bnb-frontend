@@ -245,7 +245,7 @@ export interface IRoomBookingVariables {
   guests: number;
 }
 
-export const roomBooking = ({
+export const createBooking = ({
     checkIn,
     checkOut,
     roomPk,
