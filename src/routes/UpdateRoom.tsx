@@ -26,16 +26,15 @@ import {
     getAmenities,
     getCategories,
     getRoom,
-    IUpdateRoomVariables,
 } from "../api";
 import useHostOnlyPage from "../components/HostOnlyPage";
 import ProtectedPage from "../components/ProtectedPage";
-import { IAmenity, ICategory, IRoomDetail } from "../types";
+import { IAmenity, ICategory, IRoomDetail, IUpdateRoom } from "../types";
 import { Helmet } from "react-helmet";
 
 export default function UpdateRoom() {
     useHostOnlyPage();
-    const { register, handleSubmit } = useForm<IUpdateRoomVariables>();
+    const { register, handleSubmit } = useForm<IUpdateRoom>();
     const { room_pk } = useParams();
     const toast = useToast();
     const navigate = useNavigate();
@@ -58,7 +57,7 @@ export default function UpdateRoom() {
         ICategory[]
     >(["categories"], getCategories);
 
-    const onSubmit = (data: IUpdateRoomVariables) => {
+    const onSubmit = (data: IUpdateRoom) => {
         if (room_pk) {
             data["room_pk"] = room_pk;
             mutation.mutate(data);

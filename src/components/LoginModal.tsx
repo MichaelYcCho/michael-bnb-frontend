@@ -22,7 +22,6 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   IUsernameLoginError,
   IUsernameLoginSuccess,
-  IUsernameLoginVariables,
   usernameLogIn,
 } from "../api";
 

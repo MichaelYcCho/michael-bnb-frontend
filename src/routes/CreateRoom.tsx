@@ -23,16 +23,15 @@ import {
   import {
     getAmenities,
     getCategories,
-    ICreateRoomVariables,
     createRoom,
   } from "../api";
   import useHostOnlyPage from "../components/HostOnlyPage";
   import ProtectedPage from "../components/ProtectedPage";
-  import { IAmenity, ICategory, IRoomDetail } from "../types";
+  import { IAmenity, ICategory, ICreateRoom, IRoomDetail } from "../types";
   import { useNavigate } from "react-router-dom";
   
   export default function CreateRoom() {
-    const { register, handleSubmit } = useForm<ICreateRoomVariables>();
+    const { register, handleSubmit } = useForm<ICreateRoom>();
     const toast = useToast();
     const navigate = useNavigate();
     const mutation = useMutation(createRoom, {
@@ -49,7 +48,7 @@ import {
     const { data: amenities } = useQuery<IAmenity[]>(["amenities"], getAmenities);
     const { data: categories } = useQuery<ICategory[]>(["categories"], getCategories);
     useHostOnlyPage();
-    const onSubmit = (data: ICreateRoomVariables) => {
+    const onSubmit = (data: ICreateRoom) => {
       mutation.mutate(data);
     };
     return (

@@ -1,4 +1,4 @@
-// 회원가입
+// User
 
 interface ISignUp{
   name: string;
@@ -9,8 +9,45 @@ interface ISignUp{
   phone: string;
 }
 
+export interface IUsernameLogin {
+  username: string;
+  password: string;
+}
+
 
 // Room
+
+export interface ICreateRoom {
+  name: string;
+  country: string;
+  city: string;
+  price: number;
+  rooms: number;
+  toilets: number;
+  description: string;
+  address: string;
+  pet_friendly: boolean;
+  kind: string;
+  amenities: number[];
+  category: number;
+}
+
+export interface IUpdateRoom extends ICreateRoom {
+  room_pk: string;
+}
+
+export interface IUploadImage {
+  file: FileList;
+  uploadURL: string;
+}
+
+export interface ICreatePhoto {
+  description: string;
+  file: string;
+  room_pk: string;
+}
+
+
 
 export interface IRoomPhotoPhoto {
     pk: string;
