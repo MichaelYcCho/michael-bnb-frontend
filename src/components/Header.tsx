@@ -112,11 +112,18 @@ export default function Header() {
               </MenuButton>
               <MenuList>
                 {user?.is_host ? (
+                  <>
+                    {/* <Link to="/">
+                      <MenuItem>Manage bookings</MenuItem>
+                    </Link> */}
                     <Link to="/rooms/upload">
                       <MenuItem>Upload room</MenuItem>
                     </Link>
-                  ) : null
-                }
+                  </>
+                ) : null}
+                <Link to="/bookings/my">
+                  <MenuItem>My Bookings</MenuItem>
+                </Link>
                 <MenuItem onClick={onLogOut}>Log out</MenuItem>
               </MenuList>
             </Menu>

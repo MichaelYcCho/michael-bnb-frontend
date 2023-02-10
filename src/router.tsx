@@ -8,6 +8,7 @@ import RoomDetail from "./routes/RoomDetail";
 import UploadPhotos from "./routes/UploadPhotos";
 import CreateRoom from "./routes/CreateRoom";
 import UpdateRoom from "./routes/UpdateRoom";
+import MyBookings from "./routes/MyBookings";
 
 const router = createBrowserRouter([
   {
@@ -34,6 +35,10 @@ const router = createBrowserRouter([
       {
         path: "rooms/:room_pk/photos",
         element: <UploadPhotos />,
+      },
+      {
+        path: "bookings/my",
+        element: <MyBookings />,
       },
       {
         path: "social",

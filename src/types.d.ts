@@ -1,5 +1,18 @@
 // User
 
+export interface IUser {
+  last_login: string;
+  username: string;
+  email: string;
+  date_joined: string;
+  avatar: string;
+  name: string;
+  is_host: boolean;
+  gender: string;
+  language: string;
+  currency: string;
+}
+
 interface ISignUp{
   name: string;
   username: string;
@@ -16,7 +29,6 @@ export interface IUsernameLogin {
 
 
 // Room
-
 export interface ICreateRoom {
   name: string;
   country: string;
@@ -107,18 +119,6 @@ export interface IRoomPhotoPhoto {
     user: IRoomOwner;
   }
 
-  export interface IUser {
-    last_login: string;
-    username: string;
-    email: string;
-    date_joined: string;
-    avatar: string;
-    name: string;
-    is_host: boolean;
-    gender: string;
-    language: string;
-    currency: string;
-  }
 
   // Booking
   export interface ICreateBooking {
@@ -126,4 +126,17 @@ export interface IRoomPhotoPhoto {
     check_in: string;
     check_out: string;
     guests: number;
+  }
+
+  export interface IBooking {
+    id: number;
+    room: {
+      name: string;
+      price: number;
+    };
+    kind: string;
+    check_in: string;
+    check_out: string;
+    guests: number;
+    is_canceled: boolean;
   }

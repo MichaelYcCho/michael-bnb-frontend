@@ -209,10 +209,6 @@ export const checkBooking = ({
   }
 };
 
-
-
-
-
 export const createBooking = ({
     room_pk,
     check_in,
@@ -231,3 +227,15 @@ export const createBooking = ({
         )
         .then((response) => response.data);
 };
+
+export const getBookings = () =>
+  instance.get("bookings/my").then((response) => response.data);
+
+export const cancelBooking = (booking_pk: number) =>
+  instance
+    .post(`bookings/cancel/${booking_pk}`, null, {
+      headers: {
+        "X-CSRFToken": Cookie.get("csrftoken") || "",
+      },
+    })
+    .then((response) => response.status);
