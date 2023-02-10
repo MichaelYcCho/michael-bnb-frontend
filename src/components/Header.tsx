@@ -21,7 +21,7 @@ import { Link, useNavigate } from "react-router-dom";
 import LoginModal from "./LoginModal";
 import SignUpModal from "./SignUpModal";
 import useUser from "../lib/useUser";
-import { logOut } from "../api";
+import { changeMode, logOut } from "../api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRef } from "react";
 
@@ -44,7 +44,7 @@ export default function Header() {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const toastId = useRef<ToastId>();
-  const mutation = useMutation(logOut, {
+  const logOutMutation = useMutation(logOut, {
     onMutate: () => {
       toastId.current = toast({
         title: "Login out...",
@@ -64,11 +64,31 @@ export default function Header() {
       }
       queryClient.refetchQueries(["me"]);
       queryClient.refetchQueries(["rooms"]);
+      
       navigate("/");
     },
   });
   const onLogOut = async () => {
-    mutation.mutate();
+    logOutMutation.mutate();
+  };
+
+  const changeModeMutation = useMutation(changeMode, {
+    onSuccess: () => {
+        const user_mode = user?.is_host ? "GUEST" : "HOST";
+
+        toast({
+          status: "success",
+          title: "Done!",
+          description: `It's ${user_mode} Mode!`,
+      });
+      queryClient.refetchQueries(["me"]);
+      queryClient.refetchQueries(["rooms"]);
+      navigate("/");
+    },
+  });
+
+  const onChangeMode = async () => {
+    changeModeMutation.mutate();
   };
   return (
     <Stack
@@ -115,18 +135,24 @@ export default function Header() {
               </MenuButton>
               <MenuList>
                 {user?.is_host ? (
-                  <>
-                    <Link to="/bookings/manage">
-                      <MenuItem>Manage bookings</MenuItem>
-                    </Link>
-                    <Link to="/rooms/upload">
-                      <MenuItem>Upload room</MenuItem>
-                    </Link>
-                  </>
-                ) : null}
-                <Link to="/bookings/my">
-                  <MenuItem>My Bookings</MenuItem>
-                </Link>
+                    <>
+                      <MenuItem onClick={onChangeMode}>Change Guest Mode</MenuItem>
+                      <Link to="/bookings/manage">
+                        <MenuItem>Manage Bookings</MenuItem>
+                      </Link>
+                      <Link to="/rooms/upload">
+                        <MenuItem>Upload Room</MenuItem>
+                      </Link>
+                    </>
+                  ) : (
+                    <>
+                      <MenuItem onClick={onChangeMode}>Change Host Mode</MenuItem>
+                      <Link to="/bookings/my">
+                        <MenuItem>My Bookings</MenuItem>
+                      </Link>
+                    </>
+                  )
+                }
                 <MenuItem onClick={onLogOut}>Log out</MenuItem>
               </MenuList>
             </Menu>

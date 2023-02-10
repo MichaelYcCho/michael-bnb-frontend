@@ -66,6 +66,15 @@ instance
   })
   .then((response) => response.data);
 
+  export const changeMode = () =>
+  instance
+    .patch(`users/change-mode`, null, {
+      headers: {
+        "X-CSRFToken": Cookie.get("csrftoken") || "",
+      },
+    })
+    .then((response) => response.data);
+
 export const githubLogIn = (code: string) =>
 instance
   .post(
