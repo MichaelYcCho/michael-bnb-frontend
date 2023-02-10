@@ -289,14 +289,14 @@ export default function RoomDetail() {
                       </FormControl>
                       <Button
                           type="submit"
-                          disabled={!checkBookingData?.ok}
+                          disabled={!checkBookingData?.is_allow}
                           isLoading={isCheckingBooking && dates !== undefined}
                           w={"100%"}
                           colorScheme={"red"}
                       >
                           Make Booking
                       </Button>
-                      {!isCheckingBooking && !checkBookingData?.ok ? (
+                      {!isCheckingBooking && !checkBookingData?.is_allow ? (
                           <Text color="red.500">이미 예약된 날짜입니다.</Text>
                       ) : null}
                   </VStack>
