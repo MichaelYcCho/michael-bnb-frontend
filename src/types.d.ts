@@ -82,3 +82,11 @@ export interface IRoomPhotoPhoto {
     language: string;
     currency: string;
   }
+
+  // Booking
+  export interface ICreateBooking {
+    room_pk: string;
+    check_in: string;
+    check_out: string;
+    guests: number;
+  }

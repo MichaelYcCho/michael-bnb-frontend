@@ -24,15 +24,15 @@ const router = createBrowserRouter([
         element: <CreateRoom />,
       },
       {
-        path: "rooms/:roomPk",
+        path: "rooms/:room_pk",
         element: <RoomDetail />,
       },
       {
-        path: "rooms/:roomPk/update",
+        path: "rooms/:room_pk/update",
         element: <UpdateRoom />,
     },
       {
-        path: "rooms/:roomPk/photos",
+        path: "rooms/:room_pk/photos",
         element: <UploadPhotos />,
       },
       {

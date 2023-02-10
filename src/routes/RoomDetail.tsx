@@ -44,17 +44,17 @@ import useUser from "../lib/useUser";
 export default function RoomDetail() {
   const { register, handleSubmit, reset, watch } = useForm();
   const navigate = useNavigate();
-  const { roomPk } = useParams();
+  const { room_pk } = useParams();
   const { user } = useUser();
-  const { isLoading, data } = useQuery<IRoomDetail>([`rooms`, roomPk], getRoom);
-  const { data: reviewsData, isLoading: isReviewsLoading } = useQuery<IRoomReview[]>([`rooms`, roomPk, `reviews`], getRoomReviews);
-  const { data: amenities, isLoading: isAmenitiesLoading } = useQuery<IAmenity[]>([`rooms`, roomPk, `amenities`], getRoomAmenities);
+  const { isLoading, data } = useQuery<IRoomDetail>([`rooms`, room_pk], getRoom);
+  const { data: reviewsData, isLoading: isReviewsLoading } = useQuery<IRoomReview[]>([`rooms`, room_pk, `reviews`], getRoomReviews);
+  const { data: amenities, isLoading: isAmenitiesLoading } = useQuery<IAmenity[]>([`rooms`, room_pk, `amenities`], getRoomAmenities);
   const [dates, setDates] = useState<Date[]>();
 
   // dates: 사용자가 선택한 날짜 => dates가 바뀔때마다 해당 로직이 실행됨
   // enabled : Query가 자동으로 실행되지않고, 수동실행시키는 것이다. state가 undefined이 아니다 -> 사용자가 날짜를 선택 -> 쿼리 재실행
   const { data: checkBookingData, isLoading: isCheckingBooking } = useQuery(
-    ["check", roomPk, dates],
+    ["check", room_pk, dates],
     checkBooking,
     {
       cacheTime: 0,
@@ -83,18 +83,18 @@ export default function RoomDetail() {
                 position: "bottom-right",
             });
         }
-        if (roomPk && dates && user) {
+        if (room_pk && dates && user) {
             const [firstDate, secondDate] = dates;
-            const checkIn = formatDate(firstDate);
-            const checkOut = formatDate(secondDate);
+            const check_in = formatDate(firstDate);
+            const check_out = formatDate(secondDate);
             const guests = watch("guests");
-            mutation.mutate({ checkIn, checkOut, roomPk, guests });
+            mutation.mutate({ check_in, check_out, room_pk, guests });
         }
         reset();
     };
     const onEditClick = (event: React.SyntheticEvent<HTMLButtonElement>) => {
         event.preventDefault();
-        navigate(`/rooms/${roomPk}/update`);
+        navigate(`/rooms/${room_pk}/update`);
     };
     return (
       <Box

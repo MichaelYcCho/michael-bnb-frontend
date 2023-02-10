@@ -2,7 +2,7 @@ import Cookie from "js-cookie";
 import { QueryFunctionContext } from "@tanstack/react-query";
 import axios from "axios";
 import { formatDate } from "./lib/utils";
-import { ISignUp } from "./types";
+import { ICreateBooking, ISignUp } from "./types";
 
 const instance = axios.create({
   baseURL: "http://127.0.0.1:8000/api/v0/",
@@ -38,21 +38,21 @@ export const getRooms = () =>
   instance.get("rooms/").then((response) => response.data);
 
 export const getRoom = ({ queryKey }: QueryFunctionContext) => {
-  const [_, roomPk] = queryKey;
-  return instance.get(`rooms/${roomPk}`).then((response) => response.data);
+  const [_, room_pk] = queryKey;
+  return instance.get(`rooms/${room_pk}`).then((response) => response.data);
 };
 
 export const getRoomAmenities = ({ queryKey }: QueryFunctionContext) => {
-  const [_, roomPk] = queryKey;
+  const [_, room_pk] = queryKey;
   return instance
-      .get(`rooms/${roomPk}/amenities`)
+      .get(`rooms/${room_pk}/amenities`)
       .then((response) => response.data);
 };
 
 export const getRoomReviews = ({ queryKey }: QueryFunctionContext) => {
-  const [_, roomPk] = queryKey;
+  const [_, room_pk] = queryKey;
   return instance
-    .get(`rooms/${roomPk}/reviews`)
+    .get(`rooms/${room_pk}/reviews`)
     .then((response) => response.data);
 };
 
@@ -160,12 +160,12 @@ export const getUploadURL = () =>
     .then((response) => response.data);
 
 export interface IUpdateRoomVariables extends ICreateRoomVariables {
-  roomPk: string;
+  room_pk: string;
 }
 
 export const updateRoom = (variables: IUpdateRoomVariables) =>
     instance
-        .put(`rooms/${variables.roomPk}`, variables, {
+        .put(`rooms/${variables.room_pk}`, variables, {
             headers: {
                 "X-CSRFToken": Cookie.get("csrftoken") || "",
             },
@@ -193,17 +193,17 @@ export const uploadImage = ({ file, uploadURL }: IUploadImageVarialbes) => {
 export interface ICreatePhotoVariables {
   description: string;
   file: string;
-  roomPk: string;
+  room_pk: string;
 }
 
 export const createPhoto = ({
   description,
   file,
-  roomPk,
+  room_pk,
 }: ICreatePhotoVariables) =>
   instance
     .post(
-      `rooms/${roomPk}/photos`,
+      `rooms/${room_pk}/photos`,
       { description, file },
       {
         headers: {
@@ -220,14 +220,14 @@ type CheckBookingQueryKey = [string, string?, Date[]?];
 export const checkBooking = ({
   queryKey,
 }: QueryFunctionContext<CheckBookingQueryKey>) => {
-  const [_, roomPk, dates] = queryKey;
+  const [_, room_pk, dates] = queryKey;
   if (dates) {
     const [firstDate, secondDate] = dates;
-    const checkIn = formatDate(firstDate);
-    const checkOut = formatDate(secondDate);
+    const check_in = formatDate(firstDate);
+    const check_out = formatDate(secondDate);
     return instance
       .get(
-        `bookings/${roomPk}/check?check_in=${checkIn}&check_out=${checkOut}`
+        `bookings/${room_pk}/check?check_in=${check_in}&check_out=${check_out}`
       )
       .then((response) => response.data);
   }
@@ -235,23 +235,18 @@ export const checkBooking = ({
 
 
 
-export interface IRoomBookingVariables {
-  checkIn: string;
-  checkOut: string;
-  roomPk: string;
-  guests: number;
-}
+
 
 export const createBooking = ({
-    checkIn,
-    checkOut,
-    roomPk,
+    room_pk,
+    check_in,
+    check_out,
     guests,
-}: IRoomBookingVariables) => {
+}: ICreateBooking) => {
     return instance
         .post(
-            `bookings/${roomPk}`,
-            { checkIn, checkOut, guests },
+            `bookings/${room_pk}`,
+            { check_in, check_out, guests },
             {
                 headers: {
                     "X-CSRFToken": Cookie.get("csrftoken") || "",

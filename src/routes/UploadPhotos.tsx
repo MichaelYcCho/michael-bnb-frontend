@@ -26,7 +26,7 @@ import {
   
   export default function UploadPhotos() {
     const { register, handleSubmit, watch, reset } = useForm<IForm>();
-    const { roomPk } = useParams();
+    const { room_pk } = useParams();
     const toast = useToast();
     const createPhotoMutation = useMutation(createPhoto, {
       onSuccess: () => {
@@ -43,12 +43,12 @@ import {
         // mutate를 통해 전달받은 data 안의 result를 받아옴
       onSuccess: ({ result }: any) => {
         // data: any로 매개인자 받아오면 됨, console.log("data결과 확인", result)
-        if (roomPk) {
+        if (room_pk) {
             // TODO: description 완성
           createPhotoMutation.mutate({
             description: "Is Description",
             file: `https://imagedelivery.net/${process.env.REACT_APP_CF_HASH}/${result.id}/public`,
-            roomPk,
+            room_pk,
           });
         }
       },
