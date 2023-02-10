@@ -230,7 +230,7 @@ export const checkBooking = ({
     const checkOut = formatDate(secondDate);
     return instance
       .get(
-        `rooms/${roomPk}/bookings/check?check_in=${checkIn}&check_out=${checkOut}`
+        `bookings/${roomPk}/check?check_in=${checkIn}&check_out=${checkOut}`
       )
       .then((response) => response.data);
   }
@@ -253,7 +253,7 @@ export const createBooking = ({
 }: IRoomBookingVariables) => {
     return instance
         .post(
-            `rooms/${roomPk}/bookings`,
+            `bookings/${roomPk}`,
             { checkIn, checkOut, guests },
             {
                 headers: {
