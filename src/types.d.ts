@@ -1,3 +1,17 @@
+// 회원가입
+
+interface ISignUp{
+  name: string;
+  username: string;
+  password: string;
+  password_confirm: string;
+  email: string;
+  phone: string;
+}
+
+
+// Room
+
 export interface IRoomPhotoPhoto {
     pk: string;
     file: string;

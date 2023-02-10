@@ -2,6 +2,7 @@ import Cookie from "js-cookie";
 import { QueryFunctionContext } from "@tanstack/react-query";
 import axios from "axios";
 import { formatDate } from "./lib/utils";
+import { ISignUp } from "./types";
 
 const instance = axios.create({
   baseURL: "http://127.0.0.1:8000/api/v0/",
@@ -9,23 +10,19 @@ const instance = axios.create({
 });
 
 
-export interface IUserSignUpVariables {
-  name: string;
-  username: string;
-  password: string;
-  email: string;
-}
 
 export const userSignUp = ({
   name,
   username,
   password,
+  password_confirm,
   email,
-}: IUserSignUpVariables) =>
+  phone,
+}: ISignUp) =>
   instance
       .post(
           `/users/sign-up`,
-          { name, username, password, email },
+          { name, username, password, password_confirm, email, phone },
           {
               headers: {
                   "X-CSRFToken": Cookie.get("csrftoken") || "",

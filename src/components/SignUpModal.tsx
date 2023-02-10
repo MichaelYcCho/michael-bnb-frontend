@@ -17,8 +17,9 @@ import {
 } from "@chakra-ui/react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
-import { FaUserAlt, FaLock, FaEnvelope, FaUserPlus } from "react-icons/fa";
+import { FaUserAlt, FaLock, FaEnvelope, FaUserPlus, FaPhone, FaCheck } from "react-icons/fa";
 import { userSignUp } from "../api";
+import { ISignUp } from "../types";
 
 import SocialLogin from "./SocialLogin";
 
@@ -27,12 +28,7 @@ interface SignUpModalProps {
   onClose: () => void;
 }
 
-interface IForm {
-  name: string;
-  username: string;
-  password: string;
-  email: string;
-}
+
 
 export default function SignUpModal({ isOpen, onClose }: SignUpModalProps) {
   const {
@@ -40,7 +36,7 @@ export default function SignUpModal({ isOpen, onClose }: SignUpModalProps) {
       handleSubmit,
       formState: { errors },
       reset,
-  } = useForm<IForm>();
+  } = useForm<ISignUp>();
   const toast = useToast();
   const queryClient = useQueryClient();
   const mutation = useMutation(userSignUp, {
@@ -64,8 +60,8 @@ export default function SignUpModal({ isOpen, onClose }: SignUpModalProps) {
           });
       },
   });
-  const onSubmit = ({ name, username, password, email }: IForm) =>
-      mutation.mutate({ name, username, password, email });
+  const onSubmit = ({ name, username, password, password_confirm, email, phone }: ISignUp) =>
+      mutation.mutate({ name, username, password, password_confirm, email, phone });
 
   return (
       <Modal onClose={onClose} isOpen={isOpen}>
@@ -93,6 +89,20 @@ export default function SignUpModal({ isOpen, onClose }: SignUpModalProps) {
                               placeholder="name"
                           ></Input>
                       </InputGroup>
+                      <InputGroup>
+                        <InputLeftElement
+                            children={
+                            <Box color={"gray.500"}>
+                                <FaPhone />
+                            </Box>
+                            }
+                        ></InputLeftElement>
+                        <Input
+                            {...register("phone", { required: true })}
+                            variant={"filled"}
+                            placeholder="Phone Number"
+                        />
+                        </InputGroup>
                       <InputGroup>
                           <InputLeftElement
                               children={
@@ -149,6 +159,22 @@ export default function SignUpModal({ isOpen, onClose }: SignUpModalProps) {
                               placeholder="password"
                           ></Input>
                       </InputGroup>
+
+                      <InputGroup>
+                        <InputLeftElement
+                            children={
+                            <Box color={"gray.500"}>
+                                <FaCheck />
+                            </Box>
+                            }
+                        ></InputLeftElement>
+                        <Input
+                            {...register("password_confirm", { required: true })}
+                            type={"password"}
+                            variant={"filled"}
+                            placeholder="Password Confirm"
+                        />
+                        </InputGroup>
                   </VStack>
                   <LightMode>
                       <Button
