@@ -17,7 +17,7 @@ import {
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import LoginModal from "./LoginModal";
 import SignUpModal from "./SignUpModal";
 import useUser from "../lib/useUser";
@@ -42,6 +42,7 @@ export default function Header() {
   const Icon = useColorModeValue(FaMoon, FaSun);
   const toast = useToast();
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
   const toastId = useRef<ToastId>();
   const mutation = useMutation(logOut, {
     onMutate: () => {
@@ -55,13 +56,15 @@ export default function Header() {
     },
     onSuccess: () => {
       if (toastId.current) {
-        queryClient.refetchQueries(["me"]);
         toast.update(toastId.current, {
           status: "success",
           title: "Done!",
           description: "See you later!",
         });
       }
+      queryClient.refetchQueries(["me"]);
+      queryClient.refetchQueries(["rooms"]);
+      navigate("/");
     },
   });
   const onLogOut = async () => {
@@ -113,9 +116,9 @@ export default function Header() {
               <MenuList>
                 {user?.is_host ? (
                   <>
-                    {/* <Link to="/">
+                    <Link to="/bookings/manage">
                       <MenuItem>Manage bookings</MenuItem>
-                    </Link> */}
+                    </Link>
                     <Link to="/rooms/upload">
                       <MenuItem>Upload room</MenuItem>
                     </Link>

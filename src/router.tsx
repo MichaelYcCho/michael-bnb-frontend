@@ -6,9 +6,10 @@ import KakaoConfirm from "./routes/KakaoConfirm";
 import NotFound from "./routes/NotFound";
 import RoomDetail from "./routes/RoomDetail";
 import UploadPhotos from "./routes/UploadPhotos";
+import MyBookings from "./routes/MyBookings";
 import CreateRoom from "./routes/CreateRoom";
 import UpdateRoom from "./routes/UpdateRoom";
-import MyBookings from "./routes/MyBookings";
+import ManageBookings from "./routes/ManageBookings";
 
 const router = createBrowserRouter([
   {
@@ -39,6 +40,10 @@ const router = createBrowserRouter([
       {
         path: "bookings/my",
         element: <MyBookings />,
+      },
+      {
+        path: "bookings/manage",
+        element: <ManageBookings />,
       },
       {
         path: "social",

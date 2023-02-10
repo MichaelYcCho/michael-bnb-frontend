@@ -228,6 +228,9 @@ export const createBooking = ({
         .then((response) => response.data);
 };
 
+export const getManageBookings = () =>
+  instance.get("bookings/manage").then((response) => response.data);
+
 export const getBookings = () =>
   instance.get("bookings/my").then((response) => response.data);
 

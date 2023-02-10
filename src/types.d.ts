@@ -140,3 +140,20 @@ export interface IRoomPhotoPhoto {
     guests: number;
     is_canceled: boolean;
   }
+
+  interface IManageBooking {
+    id: number;
+    room: {
+      name: string;
+      price: number;
+    };
+    check_in: string;
+    check_out: string;
+    guests: number;
+    is_canceled: boolean;
+    user: {
+      name: string;
+      phone: string;
+    };
+  }
+  
