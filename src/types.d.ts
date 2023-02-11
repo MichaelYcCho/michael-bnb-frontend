@@ -62,13 +62,13 @@ export interface ICreatePhoto {
 
 
 export interface IRoomPhotoPhoto {
-    pk: string;
+    id: string;
     file: string;
     description: string;
   }
   
   export interface IRoomList {
-    pk: number;
+    id: number;
     name: string;
     country: string;
     city: string;
@@ -122,7 +122,7 @@ export interface IRoomPhotoPhoto {
 
   // Booking
   export interface ICreateBooking {
-    room_pk: string;
+    room_id: string;
     check_in: string;
     check_out: string;
     guests: number;

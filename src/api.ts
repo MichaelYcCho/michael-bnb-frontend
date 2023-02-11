@@ -106,27 +106,23 @@ export const getRooms = () =>
   instance.get("rooms/list").then((response) => response.data);
 
 export const getRoom = ({ queryKey }: QueryFunctionContext) => {
-  const [_, room_pk] = queryKey;
-  return instance.get(`rooms/${room_pk}`).then((response) => response.data);
+  const [_, room_id] = queryKey;
+  return instance.get(`rooms/${room_id}`).then((response) => response.data);
 };
 
 export const getRoomAmenities = ({ queryKey }: QueryFunctionContext) => {
-  const [_, room_pk] = queryKey;
+  const [_, room_id] = queryKey;
   return instance
-      .get(`rooms/${room_pk}/amenities`)
+      .get(`rooms/${room_id}/amenities`)
       .then((response) => response.data);
 };
 
 export const getRoomReviews = ({ queryKey }: QueryFunctionContext) => {
-  const [_, room_pk] = queryKey;
+  const [_, room_id] = queryKey;
   return instance
-    .get(`rooms/${room_pk}/reviews`)
+    .get(`rooms/${room_id}/reviews`)
     .then((response) => response.data);
 };
-
-
-
-
 
 export const getAmenities = () =>
   instance.get(`rooms/amenities`).then((response) => response.data);
@@ -134,12 +130,9 @@ export const getAmenities = () =>
 export const getCategories = () =>
   instance.get(`categories`).then((response) => response.data);
 
-
-
-
 export const createRoom = (variables: ICreateRoom) =>
   instance
-    .post(`rooms/`, variables, {
+    .post(`rooms/create`, variables, {
       headers: {
         "X-CSRFToken": Cookie.get("csrftoken") || "",
       },
@@ -155,8 +148,6 @@ export const getUploadURL = () =>
     })
     .then((response) => response.data);
 
-
-
 export const updateRoom = (variables: IUpdateRoom) =>
     instance
         .put(`rooms/${variables.room_pk}`, variables, {
@@ -165,8 +156,6 @@ export const updateRoom = (variables: IUpdateRoom) =>
             },
         })
         .then((response) => response.data);
-
-
 
 export const uploadImage = ({ file, uploadURL }: IUploadImage) => {
   const form = new FormData();
@@ -179,7 +168,6 @@ export const uploadImage = ({ file, uploadURL }: IUploadImage) => {
     })
     .then((response) => response.data);
 };
-
 
 export const createPhoto = ({
   description,
@@ -205,28 +193,28 @@ type CheckBookingQueryKey = [string, string?, Date[]?];
 export const checkBooking = ({
   queryKey,
 }: QueryFunctionContext<CheckBookingQueryKey>) => {
-  const [_, room_pk, dates] = queryKey;
+  const [_, room_id, dates] = queryKey;
   if (dates) {
     const [firstDate, secondDate] = dates;
     const check_in = formatDate(firstDate);
     const check_out = formatDate(secondDate);
     return instance
       .get(
-        `bookings/${room_pk}/check?check_in=${check_in}&check_out=${check_out}`
+        `bookings/${room_id}/check?check_in=${check_in}&check_out=${check_out}`
       )
       .then((response) => response.data);
   }
 };
 
 export const createBooking = ({
-    room_pk,
+    room_id,
     check_in,
     check_out,
     guests,
 }: ICreateBooking) => {
     return instance
         .post(
-            `bookings/${room_pk}`,
+            `bookings/${room_id}`,
             { check_in, check_out, guests },
             {
                 headers: {
@@ -251,3 +239,14 @@ export const cancelBooking = (booking_pk: number) =>
       },
     })
     .then((response) => response.status);
+
+
+// WhishList
+export const toggleWishList = (room_pk: number) =>
+  instance
+    .put(`wishlists/toggle/${room_pk}`, null, {
+      headers: {
+        "X-CSRFToken": Cookie.get("csrftoken") || "",
+      },
+    })
+    .then((response) => response.data);

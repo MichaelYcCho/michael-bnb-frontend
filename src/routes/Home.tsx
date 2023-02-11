@@ -41,8 +41,8 @@ export default function Home() {
       ) : null}
       {data?.map((room) => (
         <Room
-          key={room.pk}
-          room_pk={room.pk}
+          key={room.id}
+          room_pk={room.id}
           is_owner={room.is_owner}
           image_url={room.photos[0]?.file}
           name={room.name}

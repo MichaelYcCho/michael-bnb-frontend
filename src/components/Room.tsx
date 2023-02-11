@@ -1,4 +1,4 @@
-import { FaCamera, FaPencilAlt, FaRegHeart, FaStar } from "react-icons/fa";
+import { FaCamera, FaPencilAlt, FaRegHeart, FaStar, FaHeart } from "react-icons/fa";
 import {
   Box,
   Button,
@@ -7,11 +7,14 @@ import {
   Image,
   Text,
   useColorModeValue,
+  useToast,
   VStack,
 } from "@chakra-ui/react";
 import { Link, useNavigate } from "react-router-dom";
 import React from "react";
 import useUser from "../lib/useUser";
+import { useMutation } from "@tanstack/react-query";
+import { toggleWishList } from "../api";
 
 interface IRoomProps {
   room_pk: number;
@@ -49,6 +52,33 @@ export default function Room({
     navigate(`/rooms/${room_pk}/update`);
     window.location.reload();
   };
+
+  const toast = useToast();
+
+  const wishMutation = useMutation(toggleWishList, {
+    onSuccess: () => {
+      toast({
+        status: "success",
+        title: "Welcome!",
+        description: "하트뿅.",
+        position: "bottom-right",
+    });
+      // queryClient.refetchQueries(["me"]);
+      // queryClient.refetchQueries(["rooms"]);
+      
+      navigate("/");
+    },
+  });
+
+  const onHeartClick = (room_pk: number) => {
+    wishMutation.mutate(room_pk);
+  }
+
+
+  //    navigate(`/wishlists/toggle/${room_pk}`);
+  
+
+
   return (
     <Link to={`/rooms/${room_pk}`}>
       <VStack alignItems={"flex-start"}>
@@ -93,7 +123,8 @@ export default function Room({
                 position={"absolute"}
                 top={0}
                 right={0}
-                color="white"
+                color="red.500"
+                onClick={() => onHeartClick(room_pk)}
               >
                 <FaRegHeart size="20px" />
               </Button>
