@@ -42,7 +42,6 @@ import {
     const uploadImageMutation = useMutation(uploadImage, {
         // mutate를 통해 전달받은 data 안의 result를 받아옴
       onSuccess: ({ result }: any) => {
-        // data: any로 매개인자 받아오면 됨, console.log("data결과 확인", result)
         if (room_pk) {
             // TODO: description 완성
           createPhotoMutation.mutate({
@@ -51,6 +50,7 @@ import {
             room_pk,
           });
         }
+        // console.log("result", result);
       },
     });
     const uploadURLMutation = useMutation(getUploadURL, {
