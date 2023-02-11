@@ -13,11 +13,11 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import React from "react";
 import useUser from "../lib/useUser";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toggleWishList } from "../api";
 
 interface IRoomProps {
-  room_pk: number;
+  room_id: number;
   image_url: string;
   name: string;
   rating: number;
@@ -25,10 +25,12 @@ interface IRoomProps {
   country: string;
   price: number;
   is_owner: boolean;
+  is_wish_listed: boolean;
+  
 }
 
 export default function Room({
-  room_pk,
+  room_id,
   image_url,
   name,
   rating,
@@ -36,20 +38,21 @@ export default function Room({
   country,
   price,
   is_owner,
+  is_wish_listed
 }: IRoomProps) {
-  
+  const queryClient = useQueryClient();
   const gray = useColorModeValue("gray.600", "gray.300");
   const navigate = useNavigate();
   const { user } = useUser();
 
   const onCameraClick = (event: React.SyntheticEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    navigate(`/rooms/${room_pk}/photos`);
+    navigate(`/rooms/${room_id}/photos`);
   };
 
   const onPencilClick = (event: React.SyntheticEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    navigate(`/rooms/${room_pk}/update`);
+    navigate(`/rooms/${room_id}/update`);
     window.location.reload();
   };
 
@@ -57,30 +60,30 @@ export default function Room({
 
   const wishMutation = useMutation(toggleWishList, {
     onSuccess: () => {
+
+      var message = "Wish List에 추가되었습니다."
+      if(is_wish_listed){
+        message = "Wish List에서 삭제되었습니다."
+      }
+
       toast({
         status: "success",
-        title: "Welcome!",
-        description: "하트뿅.",
+        title: "WishList",
+        description:message,
         position: "bottom-right",
     });
-      // queryClient.refetchQueries(["me"]);
-      // queryClient.refetchQueries(["rooms"]);
-      
-      navigate("/");
+
+    queryClient.refetchQueries(["rooms"]);
     },
   });
 
-  const onHeartClick = (room_pk: number) => {
-    wishMutation.mutate(room_pk);
+  const onHeartClick = (event: React.SyntheticEvent<HTMLButtonElement>, room_id: number) => {
+    event.preventDefault();
+    wishMutation.mutate(room_id);
   }
 
-
-  //    navigate(`/wishlists/toggle/${room_pk}`);
-  
-
-
   return (
-    <Link to={`/rooms/${room_pk}`}>
+    <Link to={`/rooms/${room_id}`}>
       <VStack alignItems={"flex-start"}>
         <Box
           w="100%"
@@ -117,6 +120,17 @@ export default function Room({
                   <FaCamera size="20px" />
                 </Button>
               </Box>
+            ) : ( is_wish_listed ? (
+              <Button
+                variant={"unstyled"}
+                position={"absolute"}
+                top={0}
+                right={0}
+                color="red.500"
+                onClick={(event) => onHeartClick(event, room_id)}
+              >
+                <FaHeart size="20px" />
+              </Button>
             ) : (
               <Button
                 variant={"unstyled"}
@@ -124,11 +138,11 @@ export default function Room({
                 top={0}
                 right={0}
                 color="red.500"
-                onClick={() => onHeartClick(room_pk)}
+                onClick={(event) => onHeartClick(event, room_id)}
               >
                 <FaRegHeart size="20px" />
               </Button>
-            )}
+            ))}
         </Box>
         <Box>
           <Grid gap={2} templateColumns={"6fr 1fr"}>

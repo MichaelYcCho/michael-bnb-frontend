@@ -75,6 +75,7 @@ export interface IRoomPhotoPhoto {
     price: number;
     rating: number;
     is_owner: boolean;
+    is_wish_listed: boolean;
     photos: IRoomPhotoPhoto[];
   }
   

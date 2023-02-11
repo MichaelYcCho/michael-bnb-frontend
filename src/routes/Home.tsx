@@ -42,7 +42,7 @@ export default function Home() {
       {data?.map((room) => (
         <Room
           key={room.id}
-          room_pk={room.id}
+          room_id={room.id}
           is_owner={room.is_owner}
           image_url={room.photos[0]?.file}
           name={room.name}
@@ -50,6 +50,7 @@ export default function Home() {
           city={room.city}
           country={room.country}
           price={room.price}
+          is_wish_listed={room.is_wish_listed}
         />
       ))}
     </Grid>
