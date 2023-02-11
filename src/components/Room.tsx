@@ -1,4 +1,4 @@
-import { FaCamera, FaRegHeart, FaStar } from "react-icons/fa";
+import { FaCamera, FaPencilAlt, FaRegHeart, FaStar } from "react-icons/fa";
 import {
   Box,
   Button,
@@ -11,36 +11,46 @@ import {
 } from "@chakra-ui/react";
 import { Link, useNavigate } from "react-router-dom";
 import React from "react";
+import useUser from "../lib/useUser";
 
 interface IRoomProps {
-  imageUrl: string;
+  room_pk: number;
+  image_url: string;
   name: string;
   rating: number;
   city: string;
   country: string;
   price: number;
-  pk: number;
-  isOwner: boolean;
+  is_owner: boolean;
 }
 
 export default function Room({
-  pk,
-  imageUrl,
+  room_pk,
+  image_url,
   name,
   rating,
   city,
   country,
   price,
-  isOwner,
+  is_owner,
 }: IRoomProps) {
+  
   const gray = useColorModeValue("gray.600", "gray.300");
   const navigate = useNavigate();
+  const { user } = useUser();
+
   const onCameraClick = (event: React.SyntheticEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    navigate(`/rooms/${pk}/photos`);
+    navigate(`/rooms/${room_pk}/photos`);
+  };
+
+  const onPencilClick = (event: React.SyntheticEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    navigate(`/rooms/${room_pk}/update`);
+    window.location.reload();
   };
   return (
-    <Link to={`/rooms/${pk}`}>
+    <Link to={`/rooms/${room_pk}`}>
       <VStack alignItems={"flex-start"}>
         <Box
           w="100%"
@@ -49,21 +59,45 @@ export default function Room({
           mb={3}
           rounded="2xl"
         >
-          {imageUrl ? (
-            <Image minH="280" src={imageUrl} />
+          {image_url ? (
+            <Image minH="280" src={image_url} />
           ) : (
             <Box minH="280px" h="100%" w="100%" p={10} bg="green.400" />
           )}
-          <Button
-            variant={"unstyled"}
-            position="absolute"
-            top={0}
-            right={0}
-            onClick={onCameraClick}
-            color="white"
-          >
-            {isOwner ? <FaCamera size="20px" /> : <FaRegHeart size="20px" />}
-          </Button>
+          {is_owner && user?.is_host  ? (
+              <Box>
+                <Button
+                  variant={"unstyled"}
+                  position={"absolute"}
+                  top={0}
+                  right={10}
+                  color="white"
+                  onClick={onPencilClick}
+                >
+                  <FaPencilAlt size="20px" />
+                </Button>
+                <Button
+                  variant={"unstyled"}
+                  position={"absolute"}
+                  top={0}
+                  right={0}
+                  color="white"
+                  onClick={onCameraClick}
+                >
+                  <FaCamera size="20px" />
+                </Button>
+              </Box>
+            ) : (
+              <Button
+                variant={"unstyled"}
+                position={"absolute"}
+                top={0}
+                right={0}
+                color="white"
+              >
+                <FaRegHeart size="20px" />
+              </Button>
+            )}
         </Box>
         <Box>
           <Grid gap={2} templateColumns={"6fr 1fr"}>

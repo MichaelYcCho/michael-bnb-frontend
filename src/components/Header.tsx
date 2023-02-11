@@ -78,7 +78,7 @@ export default function Header() {
 
         toast({
           status: "success",
-          title: "Done!",
+          title: "Change Mode",
           description: `It's ${user_mode} Mode!`,
       });
       queryClient.refetchQueries(["me"]);

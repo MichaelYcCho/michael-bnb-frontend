@@ -103,7 +103,7 @@ instance
 
 // Room
 export const getRooms = () =>
-  instance.get("rooms/").then((response) => response.data);
+  instance.get("rooms/list").then((response) => response.data);
 
 export const getRoom = ({ queryKey }: QueryFunctionContext) => {
   const [_, room_pk] = queryKey;
