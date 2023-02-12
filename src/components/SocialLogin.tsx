@@ -1,26 +1,22 @@
 import { FaComment, FaGithub } from "react-icons/fa";
 import { Box, Button, Divider, HStack, Text, VStack } from "@chakra-ui/react";
 
-
 export default function SocialLogin() {
-  let kakao_id = process.env.REACT_APP_KAKAO_CLIENT_ID;
-  let github_id = process.env.REACT_APP_GITHUB_CLIENT_ID;
   let kakao_redirect_uri = "https://www.michael-bnb.store/social/kakao";
 
   if (process.env.NODE_ENV === "development") {
-    kakao_id = process.env.REACT_APP_KAKAO_CLIENT_ID_DEV;
-    github_id = process.env.REACT_APP_GITHUB_CLIENT_ID_DEV;
     kakao_redirect_uri = "http://127.0.0.1:3000/social/kakao";
   }
+
   
   let kakaoParams = {
-    client_id: `${kakao_id}`,
-    redirect_uri: `${kakao_redirect_uri}`, 
+    client_id: `${process.env.REACT_APP_KAKAO_CLIENT_ID}`,
+    redirect_uri: `${kakao_redirect_uri}`,
     response_type: "code",
   };
 
   const githubParams = {
-    client_id: `${github_id}`,
+    client_id: `${process.env.REACT_APP_GITHUB_CLIENT_ID}`,
     scope: "read:user,user:email",
   };
 
