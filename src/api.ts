@@ -5,9 +5,10 @@ import { formatDate } from "./lib/utils";
 import { ICreateBooking, ICreatePhoto, ICreateRoom, ISignUp, IUpdateRoom, IUploadImage, IUsernameLogin } from "./types";
 
 const instance = axios.create({
-  baseURL: process.env.NODE_ENV === "development" 
+  baseURL: process.env.NODE_ENV === 
+  "development" 
   ? "http://127.0.0.1:8000/api/v0/"
-  : "https://www.michael-bnb.store/api/v0/",
+  : "https://backend.michael-bnb.store/api/v0/",
   withCredentials: true,
 });
 
