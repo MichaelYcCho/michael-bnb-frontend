@@ -7,8 +7,8 @@ import { ICreateBooking, ICreatePhoto, ICreateRoom, ISignUp, IUpdateRoom, IUploa
 const instance = axios.create({
   baseURL: process.env.NODE_ENV === 
   "development" 
-  ? "http://127.0.0.1:8000/api/v0/"
-  : "https://backend.michael-bnb.store/api/v0/",
+  ? "http://127.0.0.1:8000/api/"
+  : "https://backend.michael-bnb.store/api/",
   withCredentials: true,
 });
 
@@ -23,7 +23,7 @@ export const userSignUp = ({
 }: ISignUp) =>
   instance
       .post(
-          `/users/sign-up`,
+          `/users/v0/sign-up`,
           { name, username, password, password_confirm, email, phone },
           {
               headers: {
@@ -36,7 +36,7 @@ export const userSignUp = ({
 
 
 export const getMe = () =>
-instance.get(`users/me`).then((response) => response.data);
+instance.get(`users/v0/me`).then((response) => response.data);
 
 
 export interface IUsernameLoginSuccess {
@@ -51,7 +51,7 @@ export const usernameLogIn = ({
   password,
 }: IUsernameLogin) =>
   instance.post(
-    `users/log-in`,
+    `users/v0/log-in`,
     { username, password },
     {
       headers: {
@@ -62,7 +62,7 @@ export const usernameLogIn = ({
 
 export const logOut = () =>
 instance
-  .post(`users/log-out`, null, {
+  .post(`users/v0/log-out`, null, {
     headers: {
       "X-CSRFToken": Cookie.get("csrftoken") || "",
     },
@@ -71,7 +71,7 @@ instance
 
   export const changeMode = () =>
   instance
-    .patch(`users/change-mode`, null, {
+    .patch(`users/v0/change-mode`, null, {
       headers: {
         "X-CSRFToken": Cookie.get("csrftoken") || "",
       },
@@ -81,7 +81,7 @@ instance
 export const githubLogIn = (code: string) =>
 instance
   .post(
-    `users/github`,
+    `users/v0/github`,
     { code },
     {
       headers: {
@@ -94,7 +94,7 @@ instance
 export const kakaoLogIn = (code: string) =>
 instance
   .post(
-    `users/kakao`,
+    `users/v0/kakao`,
     { code },
     {
       headers: {
@@ -106,36 +106,36 @@ instance
 
 // Room
 export const getRooms = () =>
-  instance.get("rooms/list").then((response) => response.data);
+  instance.get("rooms/v0/list").then((response) => response.data);
 
 export const getRoom = ({ queryKey }: QueryFunctionContext) => {
   const [_, room_id] = queryKey;
-  return instance.get(`rooms/${room_id}`).then((response) => response.data);
+  return instance.get(`rooms/v0/${room_id}`).then((response) => response.data);
 };
 
 export const getRoomAmenities = ({ queryKey }: QueryFunctionContext) => {
   const [_, room_id] = queryKey;
   return instance
-      .get(`rooms/${room_id}/amenities`)
+      .get(`rooms/v0/${room_id}/amenities`)
       .then((response) => response.data);
 };
 
 export const getRoomReviews = ({ queryKey }: QueryFunctionContext) => {
   const [_, room_id] = queryKey;
   return instance
-    .get(`rooms/${room_id}/reviews`)
+    .get(`rooms/v0/${room_id}/reviews`)
     .then((response) => response.data);
 };
 
 export const getAmenities = () =>
-  instance.get(`rooms/amenities/all`).then((response) => response.data);
+  instance.get(`rooms/v0/amenities/all`).then((response) => response.data);
 
 export const getCategories = () =>
-  instance.get(`categories`).then((response) => response.data);
+  instance.get(`categories/v0`).then((response) => response.data);
 
 export const createRoom = (variables: ICreateRoom) =>
   instance
-    .post(`rooms/create`, variables, {
+    .post(`rooms/v1/create`, variables, {
       headers: {
         "X-CSRFToken": Cookie.get("csrftoken") || "",
       },
@@ -144,7 +144,7 @@ export const createRoom = (variables: ICreateRoom) =>
 
 export const getUploadURL = () =>
   instance
-    .post(`medias/photos/get-url`, null, {
+    .post(`medias/v0/photos/get-url`, null, {
       headers: {
         "X-CSRFToken": Cookie.get("csrftoken") || "",
       },
@@ -153,7 +153,7 @@ export const getUploadURL = () =>
 
 export const updateRoom = (variables: IUpdateRoom) =>
     instance
-        .put(`rooms/${variables.room_pk}`, variables, {
+        .put(`rooms/v0/${variables.room_pk}`, variables, {
             headers: {
                 "X-CSRFToken": Cookie.get("csrftoken") || "",
             },
@@ -179,7 +179,7 @@ export const createPhoto = ({
 }: ICreatePhoto) =>
   instance
     .post(
-      `rooms/${room_pk}/photos`,
+      `rooms/v0/${room_pk}/photos`,
       { description, file },
       {
         headers: {
@@ -203,7 +203,7 @@ export const checkBooking = ({
     const check_out = formatDate(secondDate);
     return instance
       .get(
-        `bookings/${room_id}/check?check_in=${check_in}&check_out=${check_out}`
+        `bookings/v0/${room_id}/check?check_in=${check_in}&check_out=${check_out}`
       )
       .then((response) => response.data);
   }
@@ -217,7 +217,7 @@ export const createBooking = ({
 }: ICreateBooking) => {
     return instance
         .post(
-            `bookings/${room_id}`,
+            `bookings/v0/${room_id}`,
             { check_in, check_out, guests },
             {
                 headers: {
@@ -229,14 +229,14 @@ export const createBooking = ({
 };
 
 export const getManageBookings = () =>
-  instance.get("bookings/manage").then((response) => response.data);
+  instance.get("bookings/v0/manage").then((response) => response.data);
 
 export const getBookings = () =>
-  instance.get("bookings/my").then((response) => response.data);
+  instance.get("bookings/v0/my").then((response) => response.data);
 
 export const cancelBooking = (booking_pk: number) =>
   instance
-    .post(`bookings/cancel/${booking_pk}`, null, {
+    .post(`bookings/v0/cancel/${booking_pk}`, null, {
       headers: {
         "X-CSRFToken": Cookie.get("csrftoken") || "",
       },
@@ -247,7 +247,7 @@ export const cancelBooking = (booking_pk: number) =>
 // WhishList
 export const toggleWishList = (room_pk: number) =>
   instance
-    .put(`wishlists/toggle/${room_pk}`, null, {
+    .put(`wishlists/v0/toggle/${room_pk}`, null, {
       headers: {
         "X-CSRFToken": Cookie.get("csrftoken") || "",
       },
