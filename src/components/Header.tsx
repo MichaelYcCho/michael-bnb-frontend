@@ -140,8 +140,8 @@ export default function Header() {
                       <Link to="/bookings/manage">
                         <MenuItem>Manage Bookings</MenuItem>
                       </Link>
-                      <Link to="/rooms/upload">
-                        <MenuItem>Upload Room</MenuItem>
+                      <Link to="/rooms/create">
+                        <MenuItem>Create Room</MenuItem>
                       </Link>
                     </>
                   ) : (

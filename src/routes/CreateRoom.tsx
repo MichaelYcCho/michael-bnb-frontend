@@ -140,7 +140,7 @@ import {
               </FormControl>
 
               <FormControl>
-                <Checkbox {...register("pet_friendly", { required: true })}>
+                <Checkbox {...register("pet_friendly")}>
                   Pet friendly?
                 </Checkbox>
               </FormControl>
@@ -204,7 +204,7 @@ import {
                 size="lg"
                 w="100%"
               >
-                Upload Room
+                Create Room
               </Button>
             </VStack>
           </Container>

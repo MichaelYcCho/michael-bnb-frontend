@@ -22,7 +22,7 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "rooms/upload",
+        path: "rooms/create",
         element: <CreateRoom />,
       },
       {
