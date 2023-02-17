@@ -232,7 +232,7 @@ export const getManageBookings = () =>
   instance.get("bookings/v0/manage").then((response) => response.data);
 
 export const getBookings = () =>
-  instance.get("bookings/v0/my").then((response) => response.data);
+  instance.get("bookings/v1/my").then((response) => response.data);
 
 export const cancelBooking = (booking_pk: number) =>
   instance
