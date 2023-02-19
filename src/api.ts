@@ -106,11 +106,11 @@ instance
 
 // Room
 export const getRooms = () =>
-  instance.get("rooms/v0/list").then((response) => response.data);
+  instance.get("rooms/v1/list").then((response) => response.data);
 
 export const getRoom = ({ queryKey }: QueryFunctionContext) => {
   const [_, room_id] = queryKey;
-  return instance.get(`rooms/v0/${room_id}`).then((response) => response.data);
+  return instance.get(`rooms/v1/detail/${room_id}`).then((response) => response.data);
 };
 
 export const getRoomAmenities = ({ queryKey }: QueryFunctionContext) => {
@@ -153,7 +153,7 @@ export const getUploadURL = () =>
 
 export const updateRoom = (variables: IUpdateRoom) =>
     instance
-        .put(`rooms/v0/${variables.room_pk}`, variables, {
+        .put(`rooms/v1/update/${variables.room_id}`, variables, {
             headers: {
                 "X-CSRFToken": Cookie.get("csrftoken") || "",
             },

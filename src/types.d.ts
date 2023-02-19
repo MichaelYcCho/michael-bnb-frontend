@@ -45,7 +45,7 @@ export interface ICreateRoom {
 }
 
 export interface IUpdateRoom extends ICreateRoom {
-  room_pk: string;
+  room_id: string;
 }
 
 export interface IUploadImage {
@@ -108,7 +108,6 @@ export interface IRoomPhotoPhoto {
     pet_friendly: true;
     kind: string;
     is_owner: boolean;
-    is_liked: boolean;
     category: ICategory;
     owner: IRoomOwner;
     amenities: IAmenity[];

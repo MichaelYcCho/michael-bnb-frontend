@@ -35,7 +35,7 @@ import { Helmet } from "react-helmet";
 export default function UpdateRoom() {
     useHostOnlyPage();
     const { register, handleSubmit } = useForm<IUpdateRoom>();
-    const { room_pk } = useParams();
+    const { room_id } = useParams();
     const toast = useToast();
     const navigate = useNavigate();
     const mutation = useMutation(updateRoom, {
@@ -49,7 +49,7 @@ export default function UpdateRoom() {
             navigate(`/rooms/${data.id}`);
         },
     });
-    const { data } = useQuery<IRoomDetail>([`rooms`, room_pk], getRoom);
+    const { data } = useQuery<IRoomDetail>([`rooms`, room_id], getRoom);
     const { data: amenities, isLoading: isAmenitiesLoading } = useQuery<
         IAmenity[]
     >(["amenities"], getAmenities);
@@ -58,8 +58,8 @@ export default function UpdateRoom() {
     >(["categories"], getCategories);
 
     const onSubmit = (data: IUpdateRoom) => {
-        if (room_pk) {
-            data["room_pk"] = room_pk;
+        if (room_id) {
+            data["room_id"] = room_id;
             mutation.mutate(data);
         }
     };
@@ -255,9 +255,7 @@ export default function UpdateRoom() {
                                     <Box key={amenity.pk}>
                                         <Checkbox
                                             value={amenity.pk}
-                                            {...register("amenities", {
-                                                //required: true,
-                                            })}
+                                            {...register("amenities")}
                                         >
                                             {amenity.name}
                                         </Checkbox>

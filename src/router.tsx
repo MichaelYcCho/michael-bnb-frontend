@@ -30,7 +30,7 @@ const router = createBrowserRouter([
         element: <RoomDetail />,
       },
       {
-        path: "rooms/:room_pk/update",
+        path: "rooms/update/:room_id",
         element: <UpdateRoom />,
     },
       {
