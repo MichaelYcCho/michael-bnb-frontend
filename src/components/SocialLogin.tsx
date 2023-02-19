@@ -2,7 +2,7 @@ import { FaComment, FaGithub } from "react-icons/fa";
 import { Box, Button, Divider, HStack, Text, VStack } from "@chakra-ui/react";
 
 export default function SocialLogin() {
-  let kakao_redirect_uri = "https://www.michael-bnb.store/social/kakao";
+  let kakao_redirect_uri = "https://www.hoody-coder.store/social/kakao";
 
   if (process.env.NODE_ENV === "development") {
     kakao_redirect_uri = "http://127.0.0.1:3000/social/kakao";
