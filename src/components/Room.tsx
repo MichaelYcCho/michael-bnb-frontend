@@ -52,7 +52,7 @@ export default function Room({
 
   const onPencilClick = (event: React.SyntheticEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    navigate(`/rooms/${room_id}/update`);
+    navigate(`/rooms/update/${room_id}`);
     window.location.reload();
   };
 
