@@ -217,7 +217,7 @@ export const createBooking = ({
 }: ICreateBooking) => {
     return instance
         .post(
-            `bookings/v1/create/`,
+            `bookings/v1/create`,
             { room_id, check_in, check_out, guests },
             {
                 headers: {
