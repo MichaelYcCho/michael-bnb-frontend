@@ -91,6 +91,11 @@ export default function Header() {
   const onChangeMode = async () => {
     changeModeMutation.mutate();
   };
+  
+  const goSwagger = () => {
+    window.open(`${process.env.REACT_APP_SWAGGER}`, "_blank");
+  };
+
   return (
     <Stack
       justifyContent={"space-between"}
@@ -109,8 +114,7 @@ export default function Header() {
     >
       <Box color={logoColor}>
         <Link to={"/"}>
-        <Image height="12" src={`https://imagedelivery.net/${process.env.REACT_APP_CF_HASH}/e45bda2b-d632-42b6-b73f-f576504eca00/public`} />
-
+          <Image height="12" src={`https://imagedelivery.net/${process.env.REACT_APP_CF_HASH}/e45bda2b-d632-42b6-b73f-f576504eca00/public`} />
         </Link>
       </Box>
       <HStack spacing={2}>
@@ -120,6 +124,9 @@ export default function Header() {
           aria-label="Toggle dark mode"
           icon={<Icon />}
         />
+
+          <Button onClick={goSwagger}>Swagger</Button>
+     
         {!userLoading ? (
           !isLoggedIn ? (
             <>
