@@ -1,10 +1,11 @@
-import { FaAirbnb, FaMoon, FaSun } from "react-icons/fa";
+import {FaMoon, FaSun } from "react-icons/fa";
 import {
   Avatar,
   Box,
   Button,
   HStack,
   IconButton,
+  Image,
   LightMode,
   Menu,
   MenuButton,
@@ -108,7 +109,8 @@ export default function Header() {
     >
       <Box color={logoColor}>
         <Link to={"/"}>
-          <FaAirbnb size={"48"} />
+        <Image height="12" src={`https://imagedelivery.net/${process.env.REACT_APP_CF_HASH}/e45bda2b-d632-42b6-b73f-f576504eca00/public`} />
+
         </Link>
       </Box>
       <HStack spacing={2}>
