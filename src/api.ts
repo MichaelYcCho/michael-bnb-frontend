@@ -203,7 +203,7 @@ export const checkBooking = ({
     const check_out = formatDate(secondDate);
     return instance
       .get(
-        `bookings/v0/${room_id}/check?check_in=${check_in}&check_out=${check_out}`
+        `bookings/v1/check/${room_id}?check_in=${check_in}&check_out=${check_out}`
       )
       .then((response) => response.data);
   }
@@ -217,8 +217,8 @@ export const createBooking = ({
 }: ICreateBooking) => {
     return instance
         .post(
-            `bookings/v0/${room_id}`,
-            { check_in, check_out, guests },
+            `bookings/v1/create`,
+            { room_id, check_in, check_out, guests },
             {
                 headers: {
                     "X-CSRFToken": Cookie.get("csrftoken") || "",
@@ -229,14 +229,14 @@ export const createBooking = ({
 };
 
 export const getManageBookings = () =>
-  instance.get("bookings/v0/manage").then((response) => response.data);
+  instance.get("bookings/v1/manage").then((response) => response.data);
 
 export const getBookings = () =>
-  instance.get("bookings/v0/my").then((response) => response.data);
+  instance.get("bookings/v1/my").then((response) => response.data);
 
 export const cancelBooking = (booking_pk: number) =>
   instance
-    .post(`bookings/v0/cancel/${booking_pk}`, null, {
+    .patch(`bookings/v1/cancel/${booking_pk}`, null, {
       headers: {
         "X-CSRFToken": Cookie.get("csrftoken") || "",
       },
