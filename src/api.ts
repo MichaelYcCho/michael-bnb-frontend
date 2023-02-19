@@ -8,7 +8,7 @@ const instance = axios.create({
   baseURL: process.env.NODE_ENV === 
   "development" 
   ? "http://127.0.0.1:8000/api/"
-  : "https://backend.michael-bnb.store/api/",
+  : `${process.env.REACT_APP_API_URL}`,
   withCredentials: true,
 });
 
