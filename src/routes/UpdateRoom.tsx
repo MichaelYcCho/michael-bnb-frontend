@@ -50,6 +50,7 @@ export default function UpdateRoom() {
         },
     });
     const { data } = useQuery<IRoomDetail>([`rooms`, room_id], getRoom);
+
     const { data: amenities, isLoading: isAmenitiesLoading } = useQuery<
         IAmenity[]
     >(["amenities"], getAmenities);
@@ -196,6 +197,7 @@ export default function UpdateRoom() {
                             <Checkbox
                                 {...register("pet_friendly", {
                                 })}
+                                defaultChecked={data?.pet_friendly}
                             >
                                 Pet Friendly?
                             </Checkbox>
@@ -205,14 +207,16 @@ export default function UpdateRoom() {
                             <Select
                                 {...register("kind", { required: true })}
                                 placeholder="종류를 골라주세요"
+                                value={data?.kind}
                             >
-                                <option value={"entire_place"} selected>
-                                    Entire Place
+                            
+                                <option value="entire_place">
+                                    Entire Place 
                                 </option>
-                                <option value={"private_room"}>
+                                <option value="private_room">
                                     Private Room
                                 </option>
-                                <option value={"shared_room"}>
+                                <option value="shared_room">
                                     Shared Room
                                 </option>
                             </Select>
@@ -224,9 +228,10 @@ export default function UpdateRoom() {
                             <FormLabel>Category of Room</FormLabel>
                             <Select
                                 {...register("category", {
-                                    //required: true,
+                                    required: true,
                                 })}
                                 placeholder="카테고리를 골라주세요"
+                                value={data?.category.pk}
                             >
                                 {categories?.map((category) => (
                                     <option
