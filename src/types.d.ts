@@ -92,7 +92,7 @@ export interface IRoomPhotoPhoto {
   }
 
   export interface ICategory {
-    pk: number;
+    id: number;
     name: string;
     kind: string;
   }

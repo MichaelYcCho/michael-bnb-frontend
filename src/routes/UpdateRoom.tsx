@@ -58,6 +58,8 @@ export default function UpdateRoom() {
         ICategory[]
     >(["categories"], getCategories);
 
+    console.log('음 데이터', data)
+
     const onSubmit = (data: IUpdateRoom) => {
         if (room_id) {
             data["room_id"] = room_id;
@@ -68,7 +70,7 @@ export default function UpdateRoom() {
     return (
         <ProtectedPage>
             <Helmet>
-                <title>Room Edit</title>
+                <title>Room Update</title>
             </Helmet>
             <Box pb={40} mt={10} px={{ base: 10, lg: 40 }}>
                 <Container>
@@ -230,13 +232,13 @@ export default function UpdateRoom() {
                                 {...register("category", {
                                     required: true,
                                 })}
-                                placeholder="카테고리를 골라주세요"
-                                value={data?.category.pk}
+                                placeholder={`${data?.category.id}`}
+                                value={data?.category.id}
                             >
                                 {categories?.map((category) => (
                                     <option
-                                        key={category.pk}
-                                        value={category.pk}
+                                        key={`cat-${category.id}`}
+                                        value={category.id}
                                     >
                                         {category.name}
                                     </option>

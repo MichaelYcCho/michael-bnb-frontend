@@ -167,7 +167,7 @@ import {
                 placeholder="Choose a category"
                 >
                 {categories?.map((category) => (
-                  <option key={category.pk} value={category.pk}>
+                  <option key={category.id} value={category.id}>
                     {category.name}
                   </option>
                 ))}
