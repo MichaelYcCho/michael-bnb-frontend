@@ -191,7 +191,7 @@ export default function RoomDetail() {
                           templateColumns={"repeat(2, 1fr)"}
                       >
                           {amenities?.map((amenity) => (
-                              <GridItem gap={60} key={amenity.pk}>
+                              <GridItem gap={60} key={`amenity-${amenity.name}`}>
                                   <Text fontSize={"2xl"} color={"red.400"}>
                                       {amenity.name}
                                   </Text>

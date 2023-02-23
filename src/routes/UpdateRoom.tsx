@@ -31,6 +31,7 @@ import useHostOnlyPage from "../components/HostOnlyPage";
 import ProtectedPage from "../components/ProtectedPage";
 import { IAmenity, ICategory, IRoomDetail, IUpdateRoom } from "../types";
 import { Helmet } from "react-helmet";
+import { useEffect, useState } from "react";
 
 export default function UpdateRoom() {
     useHostOnlyPage();
@@ -55,7 +56,37 @@ export default function UpdateRoom() {
     >(["amenities"], getAmenities);
     const { data: categories, isLoading: isCategoriesLoading } = useQuery<
         ICategory[]
-    >(["categories"], getCategories);
+    >(["categories"], getCategories);   
+
+    const [category, setCatetory] = useState< any>(data?.category.id);
+    const [getAmenity, setAmenity] = useState<any >(data?.amenities.map((a: any) => a.id));
+    const [kind, setKind] = useState<string >(data?.kind??"");
+
+    
+    const onCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+      const value = event.target.value;
+      setCatetory(value);
+    };
+
+    const onKindChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        const value = event.target.value;
+        setKind(value);
+    };
+
+    const isChecked = (value: number) => {
+        const result = getAmenity?.includes(value);
+        return result;
+    };
+    
+    const onAmenityChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const value = parseInt(event.target.value);
+        const isChecked = event.target.checked;
+        if (isChecked) {
+            setAmenity([...getAmenity, value]);
+        } else {
+            setAmenity(getAmenity.filter((item: any) => item !== value));
+        }      
+    }
 
     const onSubmit = (data: IUpdateRoom) => {
         if (room_id) {
@@ -67,7 +98,7 @@ export default function UpdateRoom() {
     return (
         <ProtectedPage>
             <Helmet>
-                <title>Room Edit</title>
+                <title>Room Update</title>
             </Helmet>
             <Box pb={40} mt={10} px={{ base: 10, lg: 40 }}>
                 <Container>
@@ -196,6 +227,7 @@ export default function UpdateRoom() {
                             <Checkbox
                                 {...register("pet_friendly", {
                                 })}
+                                defaultChecked={data?.pet_friendly}
                             >
                                 Pet Friendly?
                             </Checkbox>
@@ -205,14 +237,17 @@ export default function UpdateRoom() {
                             <Select
                                 {...register("kind", { required: true })}
                                 placeholder="종류를 골라주세요"
+                                value={kind}
+                                onChange={onKindChange}
                             >
-                                <option value={"entire_place"} selected>
-                                    Entire Place
+                            
+                                <option value="entire_place">
+                                    Entire Place 
                                 </option>
-                                <option value={"private_room"}>
+                                <option value="private_room">
                                     Private Room
                                 </option>
-                                <option value={"shared_room"}>
+                                <option value="shared_room">
                                     Shared Room
                                 </option>
                             </Select>
@@ -224,15 +259,15 @@ export default function UpdateRoom() {
                             <FormLabel>Category of Room</FormLabel>
                             <Select
                                 {...register("category", {
-                                    //required: true,
+                                    required: true,
                                 })}
                                 placeholder="카테고리를 골라주세요"
+                                value = {category}
+                                onChange={onCategoryChange}
+
                             >
                                 {categories?.map((category) => (
-                                    <option
-                                        key={category.pk}
-                                        value={category.pk}
-                                    >
+                                    <option key={`cat-${category.id}`} value={category.id}>
                                         {category.name}
                                     </option>
                                 ))}
@@ -252,10 +287,14 @@ export default function UpdateRoom() {
                                 gap={5}
                             >
                                 {amenities?.map((amenity) => (
-                                    <Box key={amenity.pk}>
+                                    <Box key={`amenity-${amenity.id}`}>
                                         <Checkbox
-                                            value={amenity.pk}
-                                            {...register("amenities")}
+                                            value={amenity.id}
+                                            isChecked={isChecked(amenity.id)}
+                                            {...register("amenities", {
+                                                required: true,
+                                            })}
+                                            onChange={onAmenityChange}
                                         >
                                             {amenity.name}
                                         </Checkbox>

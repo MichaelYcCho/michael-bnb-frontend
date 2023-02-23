@@ -86,13 +86,13 @@ export interface IRoomPhotoPhoto {
   }
   
   export interface IAmenity {
-    pk: number;
+    id: number;
     name: string;
     description: string;
   }
 
   export interface ICategory {
-    pk: number;
+    id: number;
     name: string;
     kind: string;
   }

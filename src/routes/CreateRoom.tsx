@@ -167,7 +167,7 @@ import {
                 placeholder="Choose a category"
                 >
                 {categories?.map((category) => (
-                  <option key={category.pk} value={category.pk}>
+                  <option key={category.id} value={category.id}>
                     {category.name}
                   </option>
                 ))}
@@ -181,10 +181,15 @@ import {
                 <FormLabel>Amenities</FormLabel>
                 <Grid templateColumns={"1fr 1fr"} gap={5}>
                   {amenities?.map((amenity) => (
-                    <Box key={amenity.pk}>
+                    <Box key={`amenity-${amenity.id}`} >
                       <Checkbox
-                        value={amenity.pk}
+                        value={amenity.id}
+              
+                        
+                    
                         {...register("amenities", { required: true })}
+                        checked={true}
+                        
                       >
                         {amenity.name}
                       </Checkbox>

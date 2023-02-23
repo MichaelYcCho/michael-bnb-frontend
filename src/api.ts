@@ -128,10 +128,10 @@ export const getRoomReviews = ({ queryKey }: QueryFunctionContext) => {
 };
 
 export const getAmenities = () =>
-  instance.get(`rooms/v0/amenities/all`).then((response) => response.data);
+  instance.get(`rooms/v1/amenities/list`).then((response) => response.data);
 
 export const getCategories = () =>
-  instance.get(`categories/v0`).then((response) => response.data);
+  instance.get(`categories/v1/list`).then((response) => response.data);
 
 export const createRoom = (variables: ICreateRoom) =>
   instance
