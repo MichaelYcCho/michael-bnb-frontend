@@ -58,8 +58,8 @@ export default function UpdateRoom() {
         ICategory[]
     >(["categories"], getCategories);   
 
-    const [category, setCatetory] = useState<number | string | undefined>(data?.category.id);
-    const [getAmenity, setAmenity] = useState<any | undefined>(data?.amenities.map((a: any) => a.id));
+    const [category, setCatetory] = useState< any>(data?.category.id);
+    const [getAmenity, setAmenity] = useState<any >(data?.amenities.map((a: any) => a.id));
     const [kind, setKind] = useState<string >(data?.kind??"");
 
     
