@@ -51,27 +51,18 @@ export default function UpdateRoom() {
         },
     });
     const { data } = useQuery<IRoomDetail>([`rooms`, room_id], getRoom);
-
     const { data: amenities, isLoading: isAmenitiesLoading } = useQuery<
         IAmenity[]
     >(["amenities"], getAmenities);
     const { data: categories, isLoading: isCategoriesLoading } = useQuery<
         ICategory[]
-    >(["categories"], getCategories);
+    >(["categories"], getCategories);   
 
-    const [category, setCatetory] = useState<number | string | undefined>();
-    const [getAmenity, setAmenity] = useState<any | undefined>([]);
-    const [kind, setKind] = useState<number | string | undefined>();
+    const [category, setCatetory] = useState<number | string | undefined>(data?.category.id);
+    const [getAmenity, setAmenity] = useState<any | undefined>(data?.amenities.map((a: any) => a.id));
+    const [kind, setKind] = useState<string >(data?.kind??"");
 
-    useEffect(() => {
-        setCatetory(data?.category.id);
-        setKind (data?.kind);
-        setAmenity(data?.amenities.map((a: any) => a.id));
-
-
-    }, [data, categories, setAmenity]);
-
-
+    
     const onCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
       const value = event.target.value;
       setCatetory(value);
