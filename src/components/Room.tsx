@@ -87,6 +87,7 @@ export default function Room({
       <VStack alignItems={"flex-start"}>
         <Box
           w="100%"
+          maxH={"280px"}
           position="relative"
           overflow={"hidden"}
           mb={3}
