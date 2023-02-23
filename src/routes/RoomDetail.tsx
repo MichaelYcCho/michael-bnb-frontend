@@ -92,7 +92,7 @@ export default function RoomDetail() {
         }
         reset();
     };
-    const onEditClick = (event: React.SyntheticEvent<HTMLButtonElement>) => {
+    const onPencilClick = (event: React.SyntheticEvent<HTMLButtonElement>) => {
         event.preventDefault();
         navigate(`/rooms/update/${room_id}`);
     };
@@ -116,7 +116,7 @@ export default function RoomDetail() {
                   <Heading>{data?.name}</Heading>
               </Skeleton>
               {data?.is_owner ? (
-                  <Button onClick={onEditClick}>
+                  <Button onClick={onPencilClick}>
                       <FaPencilAlt />
                   </Button>
               ) : null}

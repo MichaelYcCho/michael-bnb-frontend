@@ -53,7 +53,6 @@ export default function Room({
   const onPencilClick = (event: React.SyntheticEvent<HTMLButtonElement>) => {
     event.preventDefault();
     navigate(`/rooms/update/${room_id}`);
-    window.location.reload();
   };
 
   const toast = useToast();
