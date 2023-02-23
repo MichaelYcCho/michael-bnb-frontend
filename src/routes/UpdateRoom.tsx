@@ -31,6 +31,7 @@ import useHostOnlyPage from "../components/HostOnlyPage";
 import ProtectedPage from "../components/ProtectedPage";
 import { IAmenity, ICategory, IRoomDetail, IUpdateRoom } from "../types";
 import { Helmet } from "react-helmet";
+import { useEffect, useState } from "react";
 
 export default function UpdateRoom() {
     useHostOnlyPage();
@@ -58,7 +59,43 @@ export default function UpdateRoom() {
         ICategory[]
     >(["categories"], getCategories);
 
-    console.log('음 데이터', data)
+    const [category, setCatetory] = useState<number | string | undefined>();
+    const [getAmenity, setAmenity] = useState<any | undefined>([]);
+    const [kind, setKind] = useState<number | string | undefined>();
+
+    useEffect(() => {
+        setCatetory(data?.category.id);
+        setKind (data?.kind);
+        setAmenity(data?.amenities.map((a: any) => a.id));
+
+
+    }, [data, categories, setAmenity]);
+
+
+    const onCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+      const value = event.target.value;
+      setCatetory(value);
+    };
+
+    const onKindChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        const value = event.target.value;
+        setKind(value);
+    };
+
+    const isChecked = (value: number) => {
+        const result = getAmenity?.includes(value);
+        return result;
+    };
+    
+    const onAmenityChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const value = parseInt(event.target.value);
+        const isChecked = event.target.checked;
+        if (isChecked) {
+            setAmenity([...getAmenity, value]);
+        } else {
+            setAmenity(getAmenity.filter((item: any) => item !== value));
+        }      
+    }
 
     const onSubmit = (data: IUpdateRoom) => {
         if (room_id) {
@@ -209,7 +246,8 @@ export default function UpdateRoom() {
                             <Select
                                 {...register("kind", { required: true })}
                                 placeholder="종류를 골라주세요"
-                                value={data?.kind}
+                                value={kind}
+                                onChange={onKindChange}
                             >
                             
                                 <option value="entire_place">
@@ -232,14 +270,13 @@ export default function UpdateRoom() {
                                 {...register("category", {
                                     required: true,
                                 })}
-                                placeholder={`${data?.category.id}`}
-                                value={data?.category.id}
+                                placeholder="카테고리를 골라주세요"
+                                value = {category}
+                                onChange={onCategoryChange}
+
                             >
                                 {categories?.map((category) => (
-                                    <option
-                                        key={`cat-${category.id}`}
-                                        value={category.id}
-                                    >
+                                    <option key={`cat-${category.id}`} value={category.id}>
                                         {category.name}
                                     </option>
                                 ))}
@@ -259,10 +296,14 @@ export default function UpdateRoom() {
                                 gap={5}
                             >
                                 {amenities?.map((amenity) => (
-                                    <Box key={amenity.pk}>
+                                    <Box key={`amenity-${amenity.id}`}>
                                         <Checkbox
-                                            value={amenity.pk}
-                                            {...register("amenities")}
+                                            value={amenity.id}
+                                            isChecked={isChecked(amenity.id)}
+                                            {...register("amenities", {
+                                                required: true,
+                                            })}
+                                            onChange={onAmenityChange}
                                         >
                                             {amenity.name}
                                         </Checkbox>

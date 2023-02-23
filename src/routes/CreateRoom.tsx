@@ -181,10 +181,15 @@ import {
                 <FormLabel>Amenities</FormLabel>
                 <Grid templateColumns={"1fr 1fr"} gap={5}>
                   {amenities?.map((amenity) => (
-                    <Box key={amenity.pk}>
+                    <Box key={`amenity-${amenity.id}`} >
                       <Checkbox
-                        value={amenity.pk}
+                        value={amenity.id}
+              
+                        
+                    
                         {...register("amenities", { required: true })}
+                        checked={true}
+                        
                       >
                         {amenity.name}
                       </Checkbox>
