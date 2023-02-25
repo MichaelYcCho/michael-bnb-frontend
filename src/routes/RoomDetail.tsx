@@ -245,7 +245,7 @@ export default function RoomDetail() {
                                               </HStack>
                                           </VStack>
                                       </HStack>
-                                      <Text>{review.payload}</Text>
+                                      <Text>{review.content}</Text>
                                   </VStack>
                               ))}
                           </Grid>

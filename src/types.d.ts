@@ -114,7 +114,7 @@ export interface IRoomPhotoPhoto {
   }
 
   export interface IRoomReview {
-    payload: string;
+    content: string;
     rating: number;
     user: IRoomOwner;
   }

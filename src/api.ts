@@ -123,7 +123,7 @@ export const getRoomAmenities = ({ queryKey }: QueryFunctionContext) => {
 export const getRoomReviews = ({ queryKey }: QueryFunctionContext) => {
   const [_, room_id] = queryKey;
   return instance
-    .get(`rooms/v0/${room_id}/reviews`)
+    .get(`reviews/v1/list/${room_id}`)
     .then((response) => response.data);
 };
 
