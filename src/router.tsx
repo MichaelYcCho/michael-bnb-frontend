@@ -34,7 +34,7 @@ const router = createBrowserRouter([
         element: <UpdateRoom />,
     },
       {
-        path: "rooms/:room_pk/photos",
+        path: "rooms/:room_id/photos",
         element: <UploadPhotos />,
       },
       {

@@ -192,7 +192,7 @@ export default function RoomDetail() {
                       >
                           {amenities?.map((amenity) => (
                               <GridItem gap={60} key={`amenity-${amenity.name}`}>
-                                  <Text fontSize={"2xl"} color={"red.400"}>
+                                  <Text fontSize={"1xl"} color={"red.400"}>
                                       {amenity.name}
                                   </Text>
                                   <Text>{amenity.description}</Text>

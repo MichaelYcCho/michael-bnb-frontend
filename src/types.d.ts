@@ -56,7 +56,7 @@ export interface IUploadImage {
 export interface ICreatePhoto {
   description: string;
   file: string;
-  room_pk: string;
+  room_id: string;
 }
 
 
