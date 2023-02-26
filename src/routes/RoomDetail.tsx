@@ -92,7 +92,7 @@ export default function RoomDetail() {
         }
         reset();
     };
-    const onEditClick = (event: React.SyntheticEvent<HTMLButtonElement>) => {
+    const onPencilClick = (event: React.SyntheticEvent<HTMLButtonElement>) => {
         event.preventDefault();
         navigate(`/rooms/update/${room_id}`);
     };
@@ -116,7 +116,7 @@ export default function RoomDetail() {
                   <Heading>{data?.name}</Heading>
               </Skeleton>
               {data?.is_owner ? (
-                  <Button onClick={onEditClick}>
+                  <Button onClick={onPencilClick}>
                       <FaPencilAlt />
                   </Button>
               ) : null}
@@ -192,7 +192,7 @@ export default function RoomDetail() {
                       >
                           {amenities?.map((amenity) => (
                               <GridItem gap={60} key={`amenity-${amenity.name}`}>
-                                  <Text fontSize={"2xl"} color={"red.400"}>
+                                  <Text fontSize={"1xl"} color={"red.400"}>
                                       {amenity.name}
                                   </Text>
                                   <Text>{amenity.description}</Text>
@@ -245,7 +245,7 @@ export default function RoomDetail() {
                                               </HStack>
                                           </VStack>
                                       </HStack>
-                                      <Text>{review.payload}</Text>
+                                      <Text>{review.content}</Text>
                                   </VStack>
                               ))}
                           </Grid>

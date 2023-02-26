@@ -116,14 +116,14 @@ export const getRoom = ({ queryKey }: QueryFunctionContext) => {
 export const getRoomAmenities = ({ queryKey }: QueryFunctionContext) => {
   const [_, room_id] = queryKey;
   return instance
-      .get(`rooms/v0/${room_id}/amenities`)
-      .then((response) => response.data);
+      .get(`rooms/v1/${room_id}/amenities`)
+      .then((response) => response.data.results);
 };
 
 export const getRoomReviews = ({ queryKey }: QueryFunctionContext) => {
   const [_, room_id] = queryKey;
   return instance
-    .get(`rooms/v0/${room_id}/reviews`)
+    .get(`reviews/v1/list/${room_id}`)
     .then((response) => response.data);
 };
 
@@ -175,11 +175,11 @@ export const uploadImage = ({ file, uploadURL }: IUploadImage) => {
 export const createPhoto = ({
   description,
   file,
-  room_pk,
+  room_id,
 }: ICreatePhoto) =>
   instance
     .post(
-      `rooms/v0/${room_pk}/photos`,
+      `rooms/v1/${room_id}/photos`,
       { description, file },
       {
         headers: {

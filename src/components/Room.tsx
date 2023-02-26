@@ -53,7 +53,6 @@ export default function Room({
   const onPencilClick = (event: React.SyntheticEvent<HTMLButtonElement>) => {
     event.preventDefault();
     navigate(`/rooms/update/${room_id}`);
-    window.location.reload();
   };
 
   const toast = useToast();
@@ -87,6 +86,7 @@ export default function Room({
       <VStack alignItems={"flex-start"}>
         <Box
           w="100%"
+          maxH={"280px"}
           position="relative"
           overflow={"hidden"}
           mb={3}

@@ -58,36 +58,6 @@ export default function UpdateRoom() {
         ICategory[]
     >(["categories"], getCategories);   
 
-    const [category, setCatetory] = useState< any>(data?.category.id);
-    const [getAmenity, setAmenity] = useState<any >(data?.amenities.map((a: any) => a.id));
-    const [kind, setKind] = useState<string >(data?.kind??"");
-
-    
-    const onCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-      const value = event.target.value;
-      setCatetory(value);
-    };
-
-    const onKindChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        const value = event.target.value;
-        setKind(value);
-    };
-
-    const isChecked = (value: number) => {
-        const result = getAmenity?.includes(value);
-        return result;
-    };
-    
-    const onAmenityChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const value = parseInt(event.target.value);
-        const isChecked = event.target.checked;
-        if (isChecked) {
-            setAmenity([...getAmenity, value]);
-        } else {
-            setAmenity(getAmenity.filter((item: any) => item !== value));
-        }      
-    }
-
     const onSubmit = (data: IUpdateRoom) => {
         if (room_id) {
             data["room_id"] = room_id;
@@ -235,12 +205,11 @@ export default function UpdateRoom() {
                         <FormControl>
                             <FormLabel>Kind of Room</FormLabel>
                             <Select
+                                defaultValue={data?.kind}
                                 {...register("kind", { required: true })}
                                 placeholder="종류를 골라주세요"
-                                value={kind}
-                                onChange={onKindChange}
+                           
                             >
-                            
                                 <option value="entire_place">
                                     Entire Place 
                                 </option>
@@ -258,13 +227,11 @@ export default function UpdateRoom() {
                         <FormControl>
                             <FormLabel>Category of Room</FormLabel>
                             <Select
+                                defaultValue={data?.category.id}
                                 {...register("category", {
                                     required: true,
                                 })}
                                 placeholder="카테고리를 골라주세요"
-                                value = {category}
-                                onChange={onCategoryChange}
-
                             >
                                 {categories?.map((category) => (
                                     <option key={`cat-${category.id}`} value={category.id}>
@@ -287,22 +254,17 @@ export default function UpdateRoom() {
                                 gap={5}
                             >
                                 {amenities?.map((amenity) => (
-                                    <Box key={`amenity-${amenity.id}`}>
-                                        <Checkbox
-                                            value={amenity.id}
-                                            isChecked={isChecked(amenity.id)}
-                                            {...register("amenities", {
-                                                required: true,
-                                            })}
-                                            onChange={onAmenityChange}
-                                        >
-                                            {amenity.name}
-                                        </Checkbox>
-                                        <FormHelperText>
-                                            {amenity.description}
-                                        </FormHelperText>
-                                    </Box>
-                                ))}
+                                            <Box key={amenity.id}>
+                                                <Checkbox
+                                                    defaultChecked={data?.amenities.some((a) => a.id === amenity.id)}
+                                                    value={amenity.id}
+                                                    {...register("amenities")}
+                                                >
+                                                    {amenity.name}
+                                                </Checkbox>
+                                                <FormHelperText>{amenity.description}</FormHelperText>
+                                            </Box>
+                                        ))}
                             </Grid>
                         </FormControl>
                         {mutation.isError ? (

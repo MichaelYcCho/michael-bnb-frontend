@@ -56,9 +56,8 @@ export interface IUploadImage {
 export interface ICreatePhoto {
   description: string;
   file: string;
-  room_pk: string;
+  room_id: string;
 }
-
 
 
 export interface IRoomPhotoPhoto {
@@ -114,7 +113,7 @@ export interface IRoomPhotoPhoto {
   }
 
   export interface IRoomReview {
-    payload: string;
+    content: string;
     rating: number;
     user: IRoomOwner;
   }

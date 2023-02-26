@@ -26,10 +26,11 @@ import {
   
   export default function UploadPhotos() {
     const { register, handleSubmit, watch, reset } = useForm<IForm>();
-    const { room_pk } = useParams();
+    const { room_id } = useParams();
     const toast = useToast();
     const createPhotoMutation = useMutation(createPhoto, {
       onSuccess: () => {
+        console.log('실패...?')
         toast({
           status: "success",
           title: "Image uploaded!",
@@ -38,16 +39,25 @@ import {
         });
         reset();
       },
+      onError: () => {
+        toast({
+            status: "error",
+            title: "Error!",
+            description: "이미지를 업로드하지 못했습니다.",
+            position: "bottom-right",
+        });
+    },
+
     });
     const uploadImageMutation = useMutation(uploadImage, {
         // mutate를 통해 전달받은 data 안의 result를 받아옴
       onSuccess: ({ result }: any) => {
-        if (room_pk) {
+        if (room_id) {
             // TODO: description 완성
           createPhotoMutation.mutate({
             description: "Is Description",
             file: `https://imagedelivery.net/${process.env.REACT_APP_CF_HASH}/${result.id}/public`,
-            room_pk,
+            room_id,
           });
         }
         // console.log("result", result);
