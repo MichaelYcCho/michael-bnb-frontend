@@ -58,20 +58,9 @@ export default function UpdateRoom() {
         ICategory[]
     >(["categories"], getCategories);   
 
-    const [category, setCatetory] = useState< any>(data?.category.id);
+
     const [getAmenity, setAmenity] = useState<any >(data?.amenities.map((a: any) => a.id));
-    const [kind, setKind] = useState<string >(data?.kind??"");
 
-    
-    const onCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-      const value = event.target.value;
-      setCatetory(value);
-    };
-
-    const onKindChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        const value = event.target.value;
-        setKind(value);
-    };
 
     const isChecked = (value: number) => {
         const result = getAmenity?.includes(value);
@@ -235,12 +224,11 @@ export default function UpdateRoom() {
                         <FormControl>
                             <FormLabel>Kind of Room</FormLabel>
                             <Select
+                                defaultValue={data?.kind}
                                 {...register("kind", { required: true })}
                                 placeholder="종류를 골라주세요"
-                                value={kind}
-                                onChange={onKindChange}
+                           
                             >
-                            
                                 <option value="entire_place">
                                     Entire Place 
                                 </option>
@@ -258,13 +246,11 @@ export default function UpdateRoom() {
                         <FormControl>
                             <FormLabel>Category of Room</FormLabel>
                             <Select
+                                defaultValue={data?.category.id}
                                 {...register("category", {
                                     required: true,
                                 })}
                                 placeholder="카테고리를 골라주세요"
-                                value = {category}
-                                onChange={onCategoryChange}
-
                             >
                                 {categories?.map((category) => (
                                     <option key={`cat-${category.id}`} value={category.id}>
