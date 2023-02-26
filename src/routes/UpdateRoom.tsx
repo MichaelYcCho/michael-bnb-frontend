@@ -58,25 +58,6 @@ export default function UpdateRoom() {
         ICategory[]
     >(["categories"], getCategories);   
 
-
-    const [getAmenity, setAmenity] = useState<any >(data?.amenities.map((a: any) => a.id));
-
-
-    const isChecked = (value: number) => {
-        const result = getAmenity?.includes(value);
-        return result;
-    };
-    
-    const onAmenityChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const value = parseInt(event.target.value);
-        const isChecked = event.target.checked;
-        if (isChecked) {
-            setAmenity([...getAmenity, value]);
-        } else {
-            setAmenity(getAmenity.filter((item: any) => item !== value));
-        }      
-    }
-
     const onSubmit = (data: IUpdateRoom) => {
         if (room_id) {
             data["room_id"] = room_id;
@@ -273,22 +254,17 @@ export default function UpdateRoom() {
                                 gap={5}
                             >
                                 {amenities?.map((amenity) => (
-                                    <Box key={`amenity-${amenity.id}`}>
-                                        <Checkbox
-                                            value={amenity.id}
-                                            isChecked={isChecked(amenity.id)}
-                                            {...register("amenities", {
-                                                required: true,
-                                            })}
-                                            onChange={onAmenityChange}
-                                        >
-                                            {amenity.name}
-                                        </Checkbox>
-                                        <FormHelperText>
-                                            {amenity.description}
-                                        </FormHelperText>
-                                    </Box>
-                                ))}
+                                            <Box key={amenity.id}>
+                                                <Checkbox
+                                                    defaultChecked={data?.amenities.some((a) => a.id === amenity.id)}
+                                                    value={amenity.id}
+                                                    {...register("amenities")}
+                                                >
+                                                    {amenity.name}
+                                                </Checkbox>
+                                                <FormHelperText>{amenity.description}</FormHelperText>
+                                            </Box>
+                                        ))}
                             </Grid>
                         </FormControl>
                         {mutation.isError ? (
