@@ -81,7 +81,7 @@ instance
 export const githubLogIn = (code: string) =>
 instance
   .post(
-    `users/v0/github`,
+    `users/v1/github`,
     { code },
     {
       headers: {
@@ -94,7 +94,7 @@ instance
 export const kakaoLogIn = (code: string) =>
 instance
   .post(
-    `users/v0/kakao`,
+    `users/v1/kakao`,
     { code },
     {
       headers: {
