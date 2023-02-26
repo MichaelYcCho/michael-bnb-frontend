@@ -60,7 +60,6 @@ export interface ICreatePhoto {
 }
 
 
-
 export interface IRoomPhotoPhoto {
     id: string;
     file: string;
