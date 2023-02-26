@@ -23,7 +23,7 @@ export const userSignUp = ({
 }: ISignUp) =>
   instance
       .post(
-          `/users/v0/sign-up`,
+          `/users/v1/sign-up`,
           { name, username, password, password_confirm, email, phone },
           {
               headers: {
@@ -36,7 +36,7 @@ export const userSignUp = ({
 
 
 export const getMe = () =>
-instance.get(`users/v0/me`).then((response) => response.data);
+instance.get(`users/v1/me`).then((response) => response.data);
 
 
 export interface IUsernameLoginSuccess {
@@ -51,7 +51,7 @@ export const usernameLogIn = ({
   password,
 }: IUsernameLogin) =>
   instance.post(
-    `users/v0/log-in`,
+    `users/v1/log-in`,
     { username, password },
     {
       headers: {
@@ -62,7 +62,7 @@ export const usernameLogIn = ({
 
 export const logOut = () =>
 instance
-  .post(`users/v0/log-out`, null, {
+  .post(`users/v1/log-out`, null, {
     headers: {
       "X-CSRFToken": Cookie.get("csrftoken") || "",
     },
@@ -71,7 +71,7 @@ instance
 
   export const changeMode = () =>
   instance
-    .patch(`users/v0/change-mode`, null, {
+    .patch(`users/v1/change-mode`, null, {
       headers: {
         "X-CSRFToken": Cookie.get("csrftoken") || "",
       },
