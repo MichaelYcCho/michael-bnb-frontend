@@ -247,7 +247,7 @@ export const cancelBooking = (booking_pk: number) =>
 // WhishList
 export const toggleWishList = (room_pk: number) =>
   instance
-    .put(`wishlists/v0/toggle/${room_pk}`, null, {
+    .put(`wishlists/v1/toggle/${room_pk}`, null, {
       headers: {
         "X-CSRFToken": Cookie.get("csrftoken") || "",
       },
