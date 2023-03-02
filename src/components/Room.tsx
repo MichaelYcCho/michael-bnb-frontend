@@ -59,7 +59,6 @@ export default function Room({
 
   const wishMutation = useMutation(toggleWishList, {
     onSuccess: () => {
-
       var message = "Wish List에 추가되었습니다."
       if(is_wish_listed){
         message = "Wish List에서 삭제되었습니다."
@@ -74,7 +73,16 @@ export default function Room({
 
     queryClient.refetchQueries(["rooms"]);
     },
+    onError: () => {
+      toast({
+          status: "error",
+          title: "Error!",
+          description: "로그인이 필요합니다",
+          position: "bottom-right",
+      });
+  },
   });
+  
 
   const onHeartClick = (event: React.SyntheticEvent<HTMLButtonElement>, room_id: number) => {
     event.preventDefault();
